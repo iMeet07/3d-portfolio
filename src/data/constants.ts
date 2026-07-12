@@ -38,6 +38,13 @@ export enum SkillNames {
   PANDAS = "pandas",
   JAVA = "java",
   STREAMLIT = "streamlit",
+  // Systems / distributed backend
+  SPRING = "spring",
+  KAFKA = "kafka",
+  REDIS = "redis",
+  LANGCHAIN = "langchain",
+  PYSPARK = "pyspark",
+  MLFLOW = "mlflow",
 }
 export type Skill = {
   id: number;
@@ -344,6 +351,54 @@ using use = useUsing("use")`,
     color: "#ff4b4b",
     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/streamlit/streamlit-original.svg",
   },
+  [SkillNames.SPRING]: {
+    id: 37,
+    name: "spring",
+    label: "Spring Boot",
+    shortDescription: "enterprise Java that actually ships, dependency injection go brr ☕🚀",
+    color: "#6db33f",
+    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original.svg",
+  },
+  [SkillNames.KAFKA]: {
+    id: 38,
+    name: "kafka",
+    label: "Apache Kafka",
+    shortDescription: "event streaming at millions of messages per second, no cap 📨⚡",
+    color: "#231f20",
+    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/apachekafka/apachekafka-original.svg",
+  },
+  [SkillNames.REDIS]: {
+    id: 39,
+    name: "redis",
+    label: "Redis",
+    shortDescription: "in-memory speed demon, caching and rate-limiting made easy 🔴⚡",
+    color: "#dc382d",
+    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/redis/redis-original.svg",
+  },
+  [SkillNames.LANGCHAIN]: {
+    id: 40,
+    name: "langchain",
+    label: "LangChain",
+    shortDescription: "chaining LLMs together until something intelligent pops out 🦜⛓️",
+    color: "#1c3c3c",
+    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg",
+  },
+  [SkillNames.PYSPARK]: {
+    id: 41,
+    name: "pyspark",
+    label: "PySpark",
+    shortDescription: "distributed data at petabyte scale, Spark go zoom 🔥⚡",
+    color: "#e25a1c",
+    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/apachespark/apachespark-original.svg",
+  },
+  [SkillNames.MLFLOW]: {
+    id: 42,
+    name: "mlflow",
+    label: "MLflow",
+    shortDescription: "experiment tracking so you remember which run was actually good 📊🧪",
+    color: "#0194e2",
+    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg",
+  },
 };
 
 export type Experience = {
@@ -380,6 +435,28 @@ export const EXPERIENCE: Experience[] = [
   {
     id: 2,
     startDate: "May 2026",
+    endDate: "Aug 2026",
+    title: "Data Science Associate",
+    company: "KCC Capital Partners · Investment Banking AI/DS",
+    description: [
+      "Collecting, cleaning, and analyzing structured & unstructured datasets (companies, markets, transactions) to support M&A and deal-sourcing workflows.",
+      "Developing statistical models and ML algorithms for predictive analytics — identifying strategic/financial buyers and valuation modeling.",
+      "Building dashboards and automated reporting pipelines (Dash + Plotly) for internal and client-facing investment intelligence.",
+      "Integrating external data feeds and financial databases; translating data insights into actionable strategies for transactions.",
+    ],
+    skills: [
+      SkillNames.PYTHON,
+      SkillNames.PYSPARK,
+      SkillNames.SKLEARN,
+      SkillNames.LANGCHAIN,
+      SkillNames.AWS,
+      SkillNames.MLFLOW,
+      SkillNames.DOCKER,
+    ],
+  },
+  {
+    id: 3,
+    startDate: "May 2026",
     endDate: "Present",
     title: "Student Researcher",
     company: "Stony Brook DB Lab · Prof. Fusheng Wang",
@@ -398,7 +475,7 @@ export const EXPERIENCE: Experience[] = [
     ],
   },
   {
-    id: 3,
+    id: 4,
     startDate: "Jan 2025",
     endDate: "Jul 2025",
     title: "AI Developer Intern",
@@ -419,7 +496,7 @@ export const EXPERIENCE: Experience[] = [
     ],
   },
   {
-    id: 4,
+    id: 5,
     startDate: "Jun 2024",
     endDate: "Aug 2024",
     title: "AI Engineer Intern",
@@ -438,7 +515,7 @@ export const EXPERIENCE: Experience[] = [
     ],
   },
   {
-    id: 5,
+    id: 6,
     startDate: "Aug 2023",
     endDate: "Jul 2024",
     title: "Chapter Manager",
@@ -456,7 +533,7 @@ export const EXPERIENCE: Experience[] = [
     ],
   },
   {
-    id: 6,
+    id: 7,
     startDate: "Jun 2023",
     endDate: "Dec 2023",
     title: "Web Developer Intern",

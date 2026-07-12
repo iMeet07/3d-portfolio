@@ -14,7 +14,7 @@ import {
 const STATS = [
   { value: "9+", label: "co-authored research abstracts" },
   { value: "300K+", label: "patient records analyzed" },
-  { value: "2", label: "active studies" },
+  { value: "3", label: "active studies + papers" },
 ];
 
 const DATASETS = ["N3C", "TriNetX", "ACS TQIP", "ACS NSQIP", "SEER"];
@@ -41,6 +41,17 @@ const STUDIES = [
       "Evaluating generalizability and the role of PSM as sensitivity vs primary analysis.",
     ],
     tags: ["R", "EHR", "Propensity Matching", "Epidemiology"],
+  },
+  {
+    title: "The Generation Bottleneck: Limits of Reranking & Majority Voting in LLM Reasoning",
+    lab: "AMS 691 — LLM Frontier · Stony Brook University",
+    status: "Course research paper",
+    points: [
+      "Systematically evaluated multi-sample reasoning strategies on the GSM8K benchmark.",
+      "Majority voting degrades accuracy from 82.5% → 61.67%; PRM-based reranking recovers to 74.5% but fails to match baseline.",
+      "Proves the bottleneck lies in generation quality, not selection — PRMs misled by structurally coherent but logically incorrect reasoning.",
+    ],
+    tags: ["LLMs", "Reasoning", "GSM8K", "PRMs"],
   },
 ];
 
@@ -104,7 +115,7 @@ const ResearchSection = () => {
           </span>
         </motion.p>
 
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
           {STUDIES.map((study, index) => (
             <motion.div
               key={study.title}

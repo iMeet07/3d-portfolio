@@ -271,17 +271,72 @@ const PROJECT_SKILLS = {
     fg: "white",
     icon: <SiStripe />,
   },
+  spring: {
+    title: "Spring Boot",
+    bg: "black",
+    fg: "white",
+    icon: <span>🌿<strong>Spring</strong></span>,
+  },
+  springai: {
+    title: "Spring AI",
+    bg: "black",
+    fg: "white",
+    icon: <span>🤖<strong>AI</strong></span>,
+  },
+  kafka: {
+    title: "Apache Kafka",
+    bg: "black",
+    fg: "white",
+    icon: <span>📨<strong>Kafka</strong></span>,
+  },
+  redis: {
+    title: "Redis",
+    bg: "black",
+    fg: "white",
+    icon: <span>🔴<strong>Redis</strong></span>,
+  },
+  neo4j: {
+    title: "Neo4J",
+    bg: "black",
+    fg: "white",
+    icon: <span>🔵<strong>Neo4J</strong></span>,
+  },
+  elasticsearch: {
+    title: "Elasticsearch",
+    bg: "black",
+    fg: "white",
+    icon: <span>🔍<strong>ES</strong></span>,
+  },
+  kubernetes: {
+    title: "Kubernetes",
+    bg: "black",
+    fg: "white",
+    icon: <span>☸️<strong>K8s</strong></span>,
+  },
+  postgres: {
+    title: "PostgreSQL",
+    bg: "black",
+    fg: "white",
+    icon: <span>🐘<strong>PG</strong></span>,
+  },
+  vectordb: {
+    title: "Vector DB",
+    bg: "black",
+    fg: "white",
+    icon: <span>📊<strong>VDB</strong></span>,
+  },
 };
 export type Project = {
   id: string;
   category: string;
   title: string;
-  src: string;
+  src?: string;
+  gradient?: string;
   screenshots: string[];
   skills: { frontend: Skill[]; backend: Skill[] };
   content: React.ReactNode | any;
   github?: string;
-  live: string;
+  live?: string;
 };
 const projects: Project[] = [
   {
@@ -633,6 +688,188 @@ const projects: Project[] = [
           </TypographyP>
           <ProjectsLinks live={this.live} repo={this.github} />
           <SlideShow images={[`${BASE_PATH}/movie-explorer.png`]} />
+        </div>
+      );
+    },
+  },
+  // ─── Coding Shuttle / Distributed Systems projects ───────────────
+  {
+    id: "payment-gateway",
+    category: "Distributed Systems · Fintech",
+    title: "Distributed Payment Gateway",
+    gradient: "from-emerald-900/80 via-emerald-800/60 to-teal-900/80",
+    screenshots: [],
+    live: "",
+    github: "",
+    skills: {
+      frontend: [],
+      backend: [
+        PROJECT_SKILLS.spring,
+        PROJECT_SKILLS.kafka,
+        PROJECT_SKILLS.redis,
+        PROJECT_SKILLS.postgres,
+        PROJECT_SKILLS.docker,
+        PROJECT_SKILLS.kubernetes,
+      ],
+    },
+    get content() {
+      return (
+        <div>
+          <TypographyP className="font-mono text-2xl text-center">
+            Production-grade payment gateway handling 10,000 TPS.
+          </TypographyP>
+          <TypographyP className="font-mono">
+            A Razorpay-like distributed payment system built with Spring
+            WebFlux (reactive non-blocking I/O), Apache Kafka event
+            streaming, and PCI-compliant card vault — end-to-end from
+            payment intent to settled payout.
+          </TypographyP>
+          <TypographyH3 className="my-4 mt-8">Architecture Highlights</TypographyH3>
+          <ul className="list-disc ml-6 font-mono mb-2">
+            <li>SAGA pattern (choreography-based Kafka event flows) for distributed transaction management</li>
+            <li>Outbox Pattern (PostgreSQL + Kafka) for zero message loss guarantees</li>
+            <li>Idempotency with Redis SETNX — prevents duplicate payment processing</li>
+            <li>Rate Limiting: Token Bucket, Sliding Window, and Fixed Window via Redis</li>
+            <li>Bulkhead pattern + Dead Letter Queue for fault isolation</li>
+            <li>Resilience4J: Circuit Breaker, Retry, and RateLimiter for resilient service calls</li>
+            <li>ELK Stack (Elasticsearch, Logstash, Kibana) for observability</li>
+          </ul>
+          <TypographyH3 className="my-4 mt-8">Tech Stack</TypographyH3>
+          <p className="font-mono mb-2">
+            Spring WebFlux + R2DBC (reactive) · Redis · Apache Kafka ·
+            Resilience4J · ELK Stack · PostgreSQL · Webhooks · Docker ·
+            Kubernetes
+          </p>
+        </div>
+      );
+    },
+  },
+  {
+    id: "vibe-coding-platform",
+    category: "AI SaaS · Spring AI",
+    title: "AI Vibe Coding Platform",
+    gradient: "from-violet-900/80 via-purple-800/60 to-fuchsia-900/80",
+    screenshots: [],
+    live: "",
+    github: "",
+    skills: {
+      frontend: [],
+      backend: [
+        PROJECT_SKILLS.springai,
+        PROJECT_SKILLS.vectordb,
+        PROJECT_SKILLS.rag,
+        PROJECT_SKILLS.kafka,
+        PROJECT_SKILLS.kubernetes,
+        PROJECT_SKILLS.docker,
+      ],
+    },
+    get content() {
+      return (
+        <div>
+          <TypographyP className="font-mono text-2xl text-center">
+            Generate entire applications from a single prompt.
+          </TypographyP>
+          <TypographyP className="font-mono">
+            A full SaaS platform that generates production-ready applications
+            from natural-language prompts — powered by Spring AI integrating
+            Claude, GPT-4, and other LLM APIs with a RAG pipeline for
+            context-aware code generation.
+          </TypographyP>
+          <TypographyH3 className="my-4 mt-8">Key Features</TypographyH3>
+          <ul className="list-disc ml-6 font-mono mb-2">
+            <li>Spring AI integration — model-agnostic, swappable LLM backends</li>
+            <li>RAG pipeline with Vector DB for context-aware, accurate code generation</li>
+            <li>MCP Server integration for tool-use and agent capabilities</li>
+            <li>Microservices architecture with Spring Cloud (Eureka, Gateway, Config Server)</li>
+            <li>Kafka-driven async workflows for long-running generation jobs</li>
+          </ul>
+          <TypographyH3 className="my-4 mt-8">Tech Stack</TypographyH3>
+          <p className="font-mono mb-2">
+            Spring AI · Vector DB · RAG · Spring Cloud · Apache Kafka ·
+            Docker · Kubernetes
+          </p>
+        </div>
+      );
+    },
+  },
+  {
+    id: "distributed-social",
+    category: "Distributed Systems · Graph",
+    title: "Distributed Social Network",
+    gradient: "from-blue-900/80 via-indigo-800/60 to-blue-900/80",
+    screenshots: [],
+    live: "",
+    github: "",
+    skills: {
+      frontend: [],
+      backend: [
+        PROJECT_SKILLS.spring,
+        PROJECT_SKILLS.kafka,
+        PROJECT_SKILLS.neo4j,
+        PROJECT_SKILLS.redis,
+        PROJECT_SKILLS.docker,
+        PROJECT_SKILLS.kubernetes,
+      ],
+    },
+    get content() {
+      return (
+        <div>
+          <TypographyP className="font-mono text-2xl text-center">
+            Architecture powering 900M+ user social networks.
+          </TypographyP>
+          <TypographyP className="font-mono">
+            A LinkedIn-scale distributed social platform — featuring a
+            Neo4J graph database for social connections and recommendations,
+            Kafka-driven feed fan-out, and a real-time notification
+            pipeline at FAANG scale.
+          </TypographyP>
+          <TypographyH3 className="my-4 mt-8">Architecture</TypographyH3>
+          <ul className="list-disc ml-6 font-mono mb-2">
+            <li>Neo4J graph DB for social connections, friend-of-friend queries, and recommendations</li>
+            <li>Kafka event-driven feed fan-out and real-time notification delivery</li>
+            <li>Redis caching for feed, profile data, and session state</li>
+            <li>Distributed tracing with Zipkin across all microservices</li>
+            <li>Spring Cloud (Eureka, Gateway, Config Server) for service mesh</li>
+          </ul>
+        </div>
+      );
+    },
+  },
+  {
+    id: "airbnb-clone",
+    category: "Backend Engineering · Booking",
+    title: "Airbnb Backend Clone",
+    gradient: "from-rose-900/80 via-red-800/60 to-pink-900/80",
+    screenshots: [],
+    live: "",
+    github: "",
+    skills: {
+      frontend: [],
+      backend: [
+        PROJECT_SKILLS.spring,
+        PROJECT_SKILLS.postgres,
+        PROJECT_SKILLS.elasticsearch,
+        PROJECT_SKILLS.docker,
+      ],
+    },
+    get content() {
+      return (
+        <div>
+          <TypographyP className="font-mono text-2xl text-center">
+            Production-grade booking engine with geospatial search.
+          </TypographyP>
+          <TypographyP className="font-mono">
+            A full-featured Airbnb backend — geospatial listing search via
+            Elasticsearch, transactional booking workflows, JWT auth with
+            RBAC, and a separate admin dashboard API.
+          </TypographyP>
+          <TypographyH3 className="my-4 mt-8">Key Features</TypographyH3>
+          <ul className="list-disc ml-6 font-mono mb-2">
+            <li>Geospatial search with Elasticsearch — radius-based listing queries</li>
+            <li>Transactional booking workflows with conflict detection and rollback</li>
+            <li>JWT + Spring Security for auth; RBAC for admin vs. client APIs</li>
+            <li>PostgreSQL with optimistic locking for concurrent booking safety</li>
+          </ul>
         </div>
       );
     },

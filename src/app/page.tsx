@@ -12,6 +12,7 @@ import HeroSection from "@/components/sections/hero";
 import AboutSection from "@/components/sections/about";
 import ResearchSection from "@/components/sections/research";
 import ToolkitSection from "@/components/sections/toolkit";
+import StatsSection from "@/components/sections/stats";
 
 function MainPage() {
   return (
@@ -19,6 +20,7 @@ function MainPage() {
       <AnimatedBackground />
       <main className={cn("bg-slate-100 dark:bg-transparent canvas-overlay-mode")}>
         <HeroSection />
+        <StatsSection />
         <AboutSection />
         <SkillsSection />
         <ToolkitSection />

@@ -24,13 +24,13 @@ const EDUCATION = [
     degree: "M.S. in Data Science",
     dates: "Aug 2025 – May 2027",
     detail:
-      "LLM Frontier · Database Systems · Statistical Computing · Statistical Learning",
+      "GPA 3.8 · LLM Frontier · Database Systems · Statistical Computing · Statistical Learning",
   },
   {
     school: "Gujarat Technological University",
     degree: "B.E. in Computer Engineering — Honors Minor in Data Science",
     dates: "Aug 2021 – May 2025",
-    detail: "GPA 3.87/4 · Distributed Systems · OS · Networks · DBMS",
+    detail: "GPA 3.87/4 (8.48/10) · Distributed Systems · OS · Networks · DBMS",
   },
 ];
 

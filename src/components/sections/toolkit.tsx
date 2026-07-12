@@ -84,6 +84,25 @@ const CATEGORIES: Category[] = [
       "Tailwind",
     ],
   },
+  {
+    index: "07",
+    title: "Distributed Systems",
+    hue: "from-rose-500/20 to-rose-500/5 hover:border-rose-400/40",
+    chips: [
+      "Spring Boot",
+      "Spring AI",
+      "Spring WebFlux",
+      "Apache Kafka",
+      "Redis",
+      "Neo4J",
+      "Elasticsearch",
+      "Resilience4J",
+      "SAGA / CQRS",
+      "Outbox Pattern",
+      "Zipkin",
+      "ELK Stack",
+    ],
+  },
 ];
 
 const ToolkitSection = () => {

@@ -1,9 +1,12 @@
+"use client";
+
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { Button } from "../ui/button";
-import { File, Mail } from "lucide-react";
+import { File, Mail, MapPin } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -14,22 +17,42 @@ import { BlurIn, BoxReveal } from "../reveal-animations";
 import ScrollDownIcon from "../scroll-down-icon";
 import { SiGithub, SiLinkedin } from "react-icons/si";
 import { config } from "@/data/config";
-
 import SectionWrapper from "../ui/section-wrapper";
+import { Marquee } from "../ui/marquee";
 
 const ROLES = [
   "AI/ML Engineer",
-  "Data Scientist",
+  "Systems Engineer",
   "LLM & RAG Builder",
+  "Data Scientist",
   "Clinical AI Researcher",
-  "Founder",
+  "Startup Founder",
 ];
 
-const STATS = [
-  "9+ research abstracts",
-  "300K+ records modeled",
-  "91% precision RAG",
-  "ex-IBM",
+const TECH_ITEMS = [
+  "Python",
+  "PyTorch",
+  "LangChain",
+  "LangGraph",
+  "FAISS",
+  "Spring Boot",
+  "Apache Kafka",
+  "Redis",
+  "ChromaDB",
+  "Next.js",
+  "FastAPI",
+  "AWS SageMaker",
+  "Docker",
+  "Kubernetes",
+  "Pandas",
+  "Scikit-learn",
+  "R",
+  "SQL",
+  "TensorFlow",
+  "Neo4J",
+  "PySpark",
+  "MLflow",
+  "Streamlit",
 ];
 
 const RoleRotator = () => {
@@ -56,16 +79,141 @@ const RoleRotator = () => {
   );
 };
 
+const FloatingCard = ({
+  children,
+  className,
+  delay = 0,
+  animClass = "animate-float",
+}: {
+  children: React.ReactNode;
+  className?: string;
+  delay?: number;
+  animClass?: string;
+}) => (
+  <motion.div
+    initial={{ opacity: 0, scale: 0.85 }}
+    animate={{ opacity: 1, scale: 1 }}
+    transition={{ duration: 0.5, delay }}
+    className={cn(
+      "absolute gradient-hairline rounded-xl border border-border/70 bg-card/80 backdrop-blur-md px-3 py-2 shadow-lg",
+      animClass,
+      className
+    )}
+    style={{ animationDelay: `${delay}s` }}
+  >
+    {children}
+  </motion.div>
+);
+
+const HeroRight = () => (
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 0.7, delay: 1.2 }}
+    className="relative hidden md:flex items-center justify-center h-full"
+  >
+    {/* Aurora blob background */}
+    <div className="absolute w-80 h-80 lg:w-96 lg:h-96 bg-gradient-to-tr from-violet-600/25 via-fuchsia-600/15 to-cyan-500/10 rounded-full blur-3xl -z-[1]" />
+
+    {/* Profile photo with gradient border */}
+    <div className="relative w-56 h-56 lg:w-72 lg:h-72 xl:w-80 xl:h-80">
+      <div className="absolute inset-0 rounded-3xl p-[2px] bg-gradient-to-tr from-[var(--brand-from)] via-[var(--brand-via)] to-[var(--brand-to)]">
+        <div className="w-full h-full rounded-[calc(1.5rem-2px)] overflow-hidden bg-card">
+          <Image
+            src="/assets/meet-pic.jpeg"
+            alt="Meet Brahmbhatt"
+            fill
+            className="object-cover"
+            priority
+          />
+        </div>
+      </div>
+
+      {/* Floating IBM card — top right */}
+      <FloatingCard
+        className="-top-7 -right-8 lg:-right-14"
+        delay={1.6}
+        animClass="animate-float"
+      >
+        <div className="font-display text-lg font-bold text-gradient">IBM</div>
+        <div className="font-mono text-[10px] text-muted-foreground leading-none">
+          AI Engineer Intern
+        </div>
+      </FloatingCard>
+
+      {/* Floating research card — bottom left */}
+      <FloatingCard
+        className="-bottom-8 -left-10 lg:-left-16"
+        delay={2.0}
+        animClass="animate-float-slow"
+      >
+        <div className="font-display text-lg font-bold text-gradient">9+</div>
+        <div className="font-mono text-[10px] text-muted-foreground leading-none">
+          Research Abstracts
+        </div>
+      </FloatingCard>
+
+      {/* Open to work badge — right center */}
+      <FloatingCard
+        className="top-1/2 -translate-y-1/2 -right-10 lg:-right-20"
+        delay={1.8}
+        animClass="animate-float"
+      >
+        <div className="flex items-center gap-1.5 mb-0.5">
+          <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse-glow" />
+          <span className="font-mono text-[10px] text-green-400 font-medium">
+            Open to work
+          </span>
+        </div>
+        <div className="font-mono text-[10px] text-muted-foreground">
+          Summer 2026
+        </div>
+      </FloatingCard>
+
+      {/* Location card — bottom right */}
+      <FloatingCard
+        className="-bottom-5 -right-6 lg:-right-10"
+        delay={2.2}
+        animClass="animate-float-slow"
+      >
+        <div className="flex items-center gap-1">
+          <MapPin className="w-3 h-3 text-[var(--brand-via)]" />
+          <span className="font-mono text-[10px] text-muted-foreground">
+            Stony Brook, NY
+          </span>
+        </div>
+      </FloatingCard>
+    </div>
+  </motion.div>
+);
+
+const TechMarquee = () => (
+  <div className="relative w-full overflow-hidden py-3">
+    <div className="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
+    <div className="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
+    <Marquee className="[--duration:30s]" pauseOnHover repeat={2}>
+      {TECH_ITEMS.map((tech) => (
+        <span
+          key={tech}
+          className="font-mono text-xs text-muted-foreground/60 border border-border/50 rounded-full px-3 py-1 bg-secondary/20 whitespace-nowrap hover:text-foreground/80 hover:border-primary/30 transition-colors"
+        >
+          {tech}
+        </span>
+      ))}
+    </Marquee>
+  </div>
+);
+
 const HeroSection = () => {
   const { isLoading } = usePreloader();
 
   return (
     <SectionWrapper id="hero" className={cn("relative w-full h-screen")}>
-      <div className="grid md:grid-cols-2">
+      <div className="grid md:grid-cols-2 h-[calc(100dvh-3rem)] md:h-[calc(100dvh-4rem)]">
+        {/* Left */}
         <div
           className={cn(
-            "h-[calc(100dvh-3rem)] md:h-[calc(100dvh-4rem)] z-[2]",
-            "col-span-1",
+            "z-[2] col-span-1",
             "flex flex-col justify-start md:justify-center items-center md:items-start",
             "pt-28 sm:pb-16 md:p-20 lg:p-24 xl:p-28"
           )}
@@ -77,7 +225,7 @@ const HeroSection = () => {
                   <p
                     className={cn(
                       "md:self-start mt-4 font-thin text-md text-slate-500 dark:text-zinc-400",
-                      "cursor-default font-display sm:text-xl md:text-xl whitespace-nowrap bg-clip-text "
+                      "cursor-default font-display sm:text-xl md:text-xl whitespace-nowrap"
                     )}
                   >
                     Hi, I am
@@ -108,7 +256,7 @@ const HeroSection = () => {
                     </TooltipContent>
                   </Tooltip>
                 </BlurIn>
-                {/* <div className="md:block hidden bg-gradient-to-r from-zinc-300/0 via-zinc-300/50 to-zinc-300/0 w-screen h-px animate-fade-right animate-glow" /> */}
+
                 <BlurIn delay={1.2}>
                   <p
                     className={cn(
@@ -119,6 +267,7 @@ const HeroSection = () => {
                     <RoleRotator />
                   </p>
                 </BlurIn>
+
                 <BlurIn delay={1.4}>
                   <p
                     className={cn(
@@ -126,10 +275,12 @@ const HeroSection = () => {
                       "cursor-default sm:text-base max-w-md leading-relaxed"
                     )}
                   >
-                    From 300K-patient hospital datasets to multi-agent LLM
-                    pipelines — I build AI that makes messy data useful.
+                    Clinical AI pipelines on 300K-patient EHRs. Distributed
+                    systems at 10K TPS. Multi-agent LLM workflows. I build
+                    things that hold up at scale.
                   </p>
                 </BlurIn>
+
                 <BlurIn delay={1.5}>
                   <p
                     className={cn(
@@ -137,35 +288,20 @@ const HeroSection = () => {
                       "cursor-default whitespace-nowrap"
                     )}
                   >
-                    MS in Data Science @ Stony Brook University
+                    MS in Data Science @ Stony Brook · ex-IBM · published researcher
                   </p>
                 </BlurIn>
-                <BlurIn delay={1.6}>
-                  <div className="mt-4 flex flex-wrap gap-2 max-w-md">
-                    {STATS.map((stat) => (
-                      <span
-                        key={stat}
-                        className={cn(
-                          "rounded-full border border-border bg-secondary/30 backdrop-blur-sm",
-                          "px-3 py-1 font-mono text-[11px] sm:text-xs text-muted-foreground",
-                          "hover:border-primary/40 hover:text-foreground transition-colors cursor-default"
-                        )}
-                      >
-                        {stat}
-                      </span>
-                    ))}
-                  </div>
-                </BlurIn>
               </div>
+
               <div className="mt-8 flex flex-col gap-3 w-fit">
                 <Link
                   href={"/assets/Meet-Brahmbhatt-Resume.pdf"}
                   target="_blank"
                   className="flex-1"
                 >
-                  <BoxReveal delay={2} width="100%" >
+                  <BoxReveal delay={2} width="100%">
                     <Button className="flex items-center gap-2 w-full">
-                      <File size={24} />
+                      <File size={18} />
                       <p>Resume</p>
                     </Button>
                   </BoxReveal>
@@ -189,7 +325,7 @@ const HeroSection = () => {
                   <div className="flex items-center h-full gap-2">
                     <Link href={`mailto:${config.email}`}>
                       <Button variant={"outline"}>
-                        <Mail size={24} />
+                        <Mail size={18} />
                       </Button>
                     </Link>
                     <Link
@@ -198,7 +334,7 @@ const HeroSection = () => {
                       className="cursor-can-hover"
                     >
                       <Button variant={"outline"}>
-                        <SiGithub size={24} />
+                        <SiGithub size={18} />
                       </Button>
                     </Link>
                     <Link
@@ -207,7 +343,7 @@ const HeroSection = () => {
                       className="cursor-can-hover"
                     >
                       <Button variant={"outline"}>
-                        <SiLinkedin size={24} />
+                        <SiLinkedin size={18} />
                       </Button>
                     </Link>
                   </div>
@@ -216,9 +352,26 @@ const HeroSection = () => {
             </div>
           )}
         </div>
-        <div className="grid col-span-1"></div>
+
+        {/* Right — profile photo with floating cards */}
+        <div className="col-span-1 relative">
+          {!isLoading && <HeroRight />}
+        </div>
       </div>
-      <div className="absolute bottom-10 left-[50%] translate-x-[-50%]">
+
+      {/* Tech marquee strip */}
+      {!isLoading && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 2.4 }}
+          className="absolute bottom-16 left-0 right-0 px-4"
+        >
+          <TechMarquee />
+        </motion.div>
+      )}
+
+      <div className="absolute bottom-4 left-[50%] translate-x-[-50%]">
         <ScrollDownIcon />
       </div>
     </SectionWrapper>
