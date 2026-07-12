@@ -9,8 +9,36 @@ import { useMediaQuery } from "@/hooks/use-media-query";
 import { usePreloader } from "./preloader";
 import { useRouter } from "next/navigation";
 import { useSounds } from "./realtime/hooks/use-sounds";
+import { useRoleFilter, type Track } from "@/contexts/role-filter";
 
 gsap.registerPlugin(ScrollTrigger);
+
+const SKILL_TRACKS: Partial<Record<string, Track[]>> = {
+  python:     ["ds-ml", "research"],
+  pytorch:    ["ds-ml"],
+  tensorflow: ["ds-ml"],
+  sklearn:    ["ds-ml", "research"],
+  fastapi:    ["ds-ml", "backend"],
+  r:          ["research", "ds-ml"],
+  langchain:  ["ds-ml"],
+  pyspark:    ["ds-ml"],
+  mlflow:     ["ds-ml"],
+  pandas:     ["ds-ml", "research"],
+  streamlit:  ["ds-ml"],
+  spring:     ["backend"],
+  kafka:      ["backend"],
+  redis:      ["backend"],
+  docker:     ["backend"],
+  kubernetes: ["backend"],
+  java:       ["backend"],
+  jenkins:    ["backend"],
+  postgres:   ["backend", "research"],
+  mongodb:    ["backend"],
+  nodejs:     ["backend"],
+  express:    ["backend"],
+  aws:        ["backend", "ds-ml"],
+  gcp:        ["backend"],
+};
 
 type Section = "hero" | "about" | "skills" | "experience" | "research" | "projects" | "contact";
 
@@ -65,6 +93,36 @@ export default function SkillSphere() {
 
   const [selectedSkill, setSelectedSkill] = useState<Skill | null>(null);
   const [activeSection, setActiveSection] = useState<Section>("hero");
+  const [showHint, setShowHint] = useState(true);
+
+  const { track } = useRoleFilter();
+  const nodesRef = useRef<NodeData[]>([]);
+  const dismissRef = useRef<(() => void) | null>(null);
+
+  // Hint fades after 3 s on first mount
+  useEffect(() => {
+    const t = setTimeout(() => setShowHint(false), 3000);
+    return () => clearTimeout(t);
+  }, []);
+
+  // Track change → GSAP dim/highlight each node
+  useEffect(() => {
+    if (!nodesRef.current.length) return;
+    nodesRef.current.forEach((nd, i) => {
+      const matches = track === "all" || (SKILL_TRACKS[nd.skill.name]?.includes(track) ?? false);
+      const targetIntensity = track === "all" ? 2.2 : matches ? 5.5 : 0.3;
+      const targetGlow     = track === "all" ? 0.22 : matches ? 0.45 : 0.04;
+      gsap.to(nd.mesh.material,  { emissiveIntensity: targetIntensity, duration: 0.5 });
+      gsap.to(nd.glow.material,  { opacity: targetGlow, duration: 0.5 });
+      if (matches && track !== "all") {
+        gsap.fromTo(
+          nd.mesh.scale,
+          { x: 1.7, y: 1.7, z: 1.7 },
+          { x: 1, y: 1, z: 1, duration: 0.55, ease: "back.out(1.7)", delay: i * 0.012 }
+        );
+      }
+    });
+  }, [track]);
 
   // URL hash sync
   useEffect(() => {
@@ -198,6 +256,9 @@ export default function SkillSphere() {
       nodes.push({ mesh, glow, ring, originalPos: positions[i].clone(), skill, color });
     });
 
+    // Expose nodes so the track-filter useEffect can GSAP into them
+    nodesRef.current = nodes;
+
     // ── NEURAL CONNECTION LINES ───────────────────────────────────────────────
     const CONNECT_DIST = 0.9;
     const lineVerts: number[] = [];
@@ -295,6 +356,11 @@ export default function SkillSphere() {
       (nd.mesh.material as THREE.MeshStandardMaterial).emissiveIntensity = 2.2;
       soundRefs.current.release();
       setSelectedSkill(null);
+    };
+
+    // Allow React-side dismiss (tap-outside overlay → this ref)
+    dismissRef.current = () => {
+      if (hoveredNode) { deactivateNode(hoveredNode); hoveredNode = null; }
     };
 
     // ── MOBILE TOUCH ─────────────────────────────────────────────────────────
@@ -457,13 +523,40 @@ export default function SkillSphere() {
       {/* Three.js canvas mount point */}
       <div ref={mountRef} className="fixed inset-0 w-full h-full" />
 
-      {/* Skill tooltip — appears at bottom center on hover */}
+      {/* "Click a node" hint — fades after 3 s */}
+      <div
+        className="fixed bottom-28 left-1/2 -translate-x-1/2 z-20 pointer-events-none transition-opacity duration-700"
+        style={{ opacity: showHint && !selectedSkill ? 1 : 0 }}
+      >
+        <p className="font-mono text-[11px] text-white/30 tracking-widest animate-pulse">
+          {isMobile ? "tap a node" : "click a node"}
+        </p>
+      </div>
+
+      {/* Tap-outside dismiss backdrop — mobile only, sits above canvas but below tooltip */}
+      {selectedSkill && isMobile && (
+        <div
+          className="fixed inset-0 z-[19]"
+          onClick={() => dismissRef.current?.()}
+        />
+      )}
+
+      {/* Skill tooltip — appears at bottom center on hover/tap */}
       <div
         className="fixed bottom-14 left-1/2 -translate-x-1/2 z-20 pointer-events-none transition-all duration-300"
         style={{ opacity: selectedSkill ? 1 : 0, transform: `translateX(-50%) translateY(${selectedSkill ? "0px" : "12px"})` }}
       >
         {selectedSkill && (
-          <div className="flex items-start gap-3 px-5 py-3 rounded-2xl border border-border/60 bg-card/85 backdrop-blur-md shadow-2xl gradient-hairline max-w-[420px]">
+          <div className="relative flex items-start gap-3 px-5 py-3 rounded-2xl border border-border/60 bg-card/85 backdrop-blur-md shadow-2xl gradient-hairline max-w-[420px]">
+            {/* X dismiss button — mobile only */}
+            {isMobile && (
+              <button
+                className="pointer-events-auto absolute -top-2.5 -right-2.5 w-5 h-5 rounded-full bg-card border border-border/60 flex items-center justify-center text-muted-foreground/70 text-[11px] hover:text-foreground transition-colors"
+                onClick={() => dismissRef.current?.()}
+              >
+                ×
+              </button>
+            )}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={selectedSkill.icon}
