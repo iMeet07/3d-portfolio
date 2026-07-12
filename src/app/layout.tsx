@@ -11,34 +11,35 @@ import { Providers } from "@/components/providers";
 import { GoogleAnalytics } from "@next/third-parties/google";
 
 export const metadata: Metadata = {
-  title: config.title,
+  metadataBase: new URL(config.site),
+  title: {
+    default: config.title,
+    template: `%s | Meet Brahmbhatt`,
+  },
   description: config.description.long,
   keywords: config.keywords,
   authors: [{ name: config.author }],
+  creator: config.author,
   openGraph: {
     title: config.title,
     description: config.description.short,
     url: config.site,
-    images: [
-      {
-        url: config.ogImg,
-        width: 800,
-        height: 600,
-        alt: "Portfolio preview",
-      },
-    ],
+    siteName: "Meet Brahmbhatt — Portfolio",
+    locale: "en_US",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: config.title,
     description: config.description.short,
-    images: [config.ogImg],
+    creator: "@meetbrahmbhatt",
   },
   robots: {
     index: true,
     follow: true,
+    googleBot: { index: true, follow: true },
   },
+  category: "technology",
 };
 
 const inter = Inter({
