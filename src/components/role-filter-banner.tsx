@@ -3,11 +3,11 @@ import { motion, AnimatePresence } from "motion/react";
 import { useRoleFilter, type Track } from "@/contexts/role-filter";
 import { cn } from "@/lib/utils";
 
-const TABS: { id: Track; label: string }[] = [
-  { id: "all", label: "All" },
-  { id: "ds-ml", label: "Data Science / ML" },
-  { id: "backend", label: "Backend / SWE" },
-  { id: "research", label: "Research" },
+const TABS: { id: Track; label: string; shortLabel: string }[] = [
+  { id: "all", label: "All", shortLabel: "All" },
+  { id: "ds-ml", label: "Data Science / ML", shortLabel: "DS / ML" },
+  { id: "backend", label: "Backend / SWE", shortLabel: "Backend" },
+  { id: "research", label: "Research", shortLabel: "Research" },
 ];
 
 const WHY_HIRE_ME: Record<Track, string | null> = {
@@ -29,13 +29,13 @@ export const RoleFilterBanner = () => {
         I&apos;m looking for a candidate in...
       </p>
 
-      <div className="flex flex-wrap justify-center gap-2">
+      <div className="flex gap-2 overflow-x-auto scrollbar-none w-full justify-center sm:justify-center">
         {TABS.map((tab) => (
           <button
             key={tab.id}
             onClick={() => setTrack(tab.id === track ? "all" : tab.id)}
             className={cn(
-              "relative px-4 py-1.5 rounded-full font-mono text-sm transition-colors duration-200 cursor-pointer",
+              "relative px-4 py-1.5 rounded-full font-mono text-sm transition-colors duration-200 cursor-pointer whitespace-nowrap shrink-0",
               track === tab.id
                 ? "text-white"
                 : "text-muted-foreground border border-border/50 hover:border-primary/40 hover:text-foreground"
@@ -48,7 +48,8 @@ export const RoleFilterBanner = () => {
                 transition={{ type: "spring", bounce: 0.2, duration: 0.45 }}
               />
             )}
-            <span className="relative z-10">{tab.label}</span>
+            <span className="relative z-10 sm:hidden">{tab.shortLabel}</span>
+            <span className="relative z-10 hidden sm:inline">{tab.label}</span>
           </button>
         ))}
       </div>
