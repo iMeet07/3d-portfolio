@@ -1,15 +1,7 @@
 import React from "react";
-import dynamic from "next/dynamic";
 import SmoothScroll from "@/components/smooth-scroll";
 import { cn } from "@/lib/utils";
-const SkillSphere = dynamic(() => import("@/components/skill-sphere"), {
-  ssr: false,
-  loading: () => (
-    <div className="fixed inset-0 z-0 pointer-events-none">
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[var(--brand-from)]/3 to-transparent opacity-40" />
-    </div>
-  ),
-});
+import SkillSphereClient from "@/components/skill-sphere-client";
 import SkillsSection from "@/components/sections/skills";
 import ExperienceSection from "@/components/sections/experience";
 import ProjectsSection from "@/components/sections/projects";
@@ -45,7 +37,7 @@ function MainPage() {
   return (
     <RoleFilterProvider>
       <SmoothScroll>
-        <SkillSphere />
+        <SkillSphereClient />
         <main className={cn("bg-slate-100 dark:bg-transparent canvas-overlay-mode")}>
           <HeroSection />
           <RoleFilterBanner />
