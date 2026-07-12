@@ -12,6 +12,7 @@ import { Button } from "../ui/button";
 import { config } from "@/data/config";
 import OnlineUsers from "../realtime/online-users";
 import { GitHubStarsButton } from "../ui/shadcn-io/github-stars-button";
+import { Download } from "lucide-react";
 
 interface HeaderProps {
   loader?: boolean;
@@ -65,6 +66,17 @@ const Header = ({ loader }: HeaderProps) => {
             className="mr-4"
           />
         )}
+        <Link
+          href="/assets/Meet-Brahmbhatt-Resume.pdf"
+          target="_blank"
+          rel="noopener"
+          className="hidden md:flex mr-3"
+        >
+          <Button variant="outline" size="sm" className="gap-1.5 font-mono text-xs h-8 px-3">
+            <Download className="w-3.5 h-3.5" />
+            Resume
+          </Button>
+        </Link>
         <Button
           variant={"ghost"}
           onClick={() => setIsActive(!isActive)}

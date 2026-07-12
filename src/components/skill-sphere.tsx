@@ -463,17 +463,22 @@ export default function SkillSphere() {
         style={{ opacity: selectedSkill ? 1 : 0, transform: `translateX(-50%) translateY(${selectedSkill ? "0px" : "12px"})` }}
       >
         {selectedSkill && (
-          <div className="flex items-center gap-3 px-5 py-3 rounded-2xl border border-border/60 bg-card/85 backdrop-blur-md shadow-2xl gradient-hairline">
+          <div className="flex items-start gap-3 px-5 py-3 rounded-2xl border border-border/60 bg-card/85 backdrop-blur-md shadow-2xl gradient-hairline max-w-[420px]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={selectedSkill.icon}
               alt={selectedSkill.label}
-              className="w-9 h-9 object-contain shrink-0"
+              className="w-9 h-9 object-contain shrink-0 mt-0.5"
               style={{ filter: "drop-shadow(0 0 6px currentColor)" }}
             />
             <div className="min-w-0">
               <p className="font-display font-bold text-foreground text-sm leading-tight">{selectedSkill.label}</p>
-              <p className="font-mono text-[11px] text-muted-foreground leading-snug max-w-[280px] truncate">{selectedSkill.shortDescription}</p>
+              <p className="font-mono text-[11px] text-muted-foreground leading-snug">{selectedSkill.shortDescription}</p>
+              {selectedSkill.howIUseThis && (
+                <p className="font-mono text-[10px] text-foreground/50 leading-snug mt-1.5 border-t border-border/40 pt-1.5">
+                  {selectedSkill.howIUseThis}
+                </p>
+              )}
             </div>
           </div>
         )}

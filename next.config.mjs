@@ -4,6 +4,18 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "ghchart.rshah.org",
+      },
+      {
+        protocol: "https",
+        hostname: "cdn.jsdelivr.net",
+      },
+    ],
+  },
   async headers() {
     return [
       {

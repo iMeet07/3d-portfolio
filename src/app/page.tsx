@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 import SmoothScroll from "@/components/smooth-scroll";
 import { cn } from "@/lib/utils";
@@ -13,23 +11,49 @@ import AboutSection from "@/components/sections/about";
 import ResearchSection from "@/components/sections/research";
 import ToolkitSection from "@/components/sections/toolkit";
 import StatsSection from "@/components/sections/stats";
+import { RoleFilterProvider } from "@/contexts/role-filter";
+import { RoleFilterBanner } from "@/components/role-filter-banner";
+import BlogPreviewSection from "@/components/sections/blog-preview";
+import SocialProofSection from "@/components/sections/social-proof";
+import { getBlogPosts } from "@/lib/mdx";
 
 function MainPage() {
+  const posts = getBlogPosts()
+    .sort(
+      (a, b) =>
+        new Date(b.metadata.publishedAt).getTime() -
+        new Date(a.metadata.publishedAt).getTime()
+    )
+    .slice(0, 2)
+    .map((p) => ({
+      slug: p.slug,
+      title: p.metadata.title,
+      publishedAt: p.metadata.publishedAt,
+      summary: p.metadata.summary,
+      tags: p.metadata.tags ?? [],
+      wordCount: p.content.trim().split(/\s+/).length,
+    }));
+
   return (
-    <SmoothScroll>
-      <SkillSphere />
-      <main className={cn("bg-slate-100 dark:bg-transparent canvas-overlay-mode")}>
-        <HeroSection />
-        <StatsSection />
-        <AboutSection />
-        <SkillsSection />
-        <ToolkitSection />
-        <ExperienceSection />
-        <ResearchSection />
-        <ProjectsSection />
-        <ContactSection />
-      </main>
-    </SmoothScroll>
+    <RoleFilterProvider>
+      <SmoothScroll>
+        <SkillSphere />
+        <main className={cn("bg-slate-100 dark:bg-transparent canvas-overlay-mode")}>
+          <HeroSection />
+          <RoleFilterBanner />
+          <StatsSection />
+          <AboutSection />
+          <SkillsSection />
+          <ToolkitSection />
+          <ExperienceSection />
+          <ResearchSection />
+          <ProjectsSection />
+          <BlogPreviewSection posts={posts} />
+          <SocialProofSection />
+          <ContactSection />
+        </main>
+      </SmoothScroll>
+    </RoleFilterProvider>
   );
 }
 

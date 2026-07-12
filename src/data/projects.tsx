@@ -1,6 +1,7 @@
 import SlideShow from "@/components/slide-show";
 import { Button } from "@/components/ui/button";
 import { TypographyH3, TypographyP } from "@/components/ui/typography";
+import { PaymentGatewayDiagram } from "@/components/payment-gateway-diagram";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { ReactNode } from "react";
@@ -326,10 +327,13 @@ const PROJECT_SKILLS = {
     icon: <span>📊<strong>VDB</strong></span>,
   },
 };
+export type Track = "ds-ml" | "backend" | "research" | "fullstack";
+
 export type Project = {
   id: string;
   category: string;
   title: string;
+  track: Track;
   src?: string;
   gradient?: string;
   screenshots: string[];
@@ -343,6 +347,7 @@ const projects: Project[] = [
     id: "frugalmoments",
     category: "Startup · Marketplace",
     title: "FrugalMoments",
+    track: "backend" as Track,
     src: "/assets/projects-screenshots/frugalmoments/landing.png",
     screenshots: ["landing.png"],
     live: "https://frugalmoments.vercel.app",
@@ -401,6 +406,7 @@ const projects: Project[] = [
     id: "deepwrite",
     category: "Multi-Agent AI",
     title: "DeepWrite",
+    track: "ds-ml" as Track,
     src: "/assets/projects-screenshots/deepwrite/landing.png",
     screenshots: ["landing.png"],
     live: "",
@@ -453,6 +459,7 @@ const projects: Project[] = [
     id: "multimodal-ai",
     category: "Multimodal AI",
     title: "Multi-Modal AI Assistant",
+    track: "ds-ml" as Track,
     src: "/assets/projects-screenshots/multimodal/chat_profiles_llm.png",
     screenshots: [
       "chat_profiles_llm.png",
@@ -527,6 +534,7 @@ const projects: Project[] = [
     id: "resume-screening",
     category: "LLM · RAG",
     title: "Resume Screening RAG Pipeline",
+    track: "ds-ml" as Track,
     src: "/assets/projects-screenshots/resume-screening/AS.png",
     screenshots: ["AS.png", "CP.png", "CR.png", "FA.png"],
     live: "",
@@ -546,26 +554,69 @@ const projects: Project[] = [
           <TypographyP className="font-mono text-2xl text-center">
             91% precision across 10,000+ resumes. 65% less screening time.
           </TypographyP>
-          <TypographyP className="font-mono ">
+          <TypographyP className="font-mono">
             An LLM-powered resume screening system built as my undergraduate
             thesis — combining FAISS semantic search with RAG Fusion to match
             candidates to job descriptions far beyond keyword matching, with
             explainable, auditable outputs for hiring managers.
           </TypographyP>
           <ProjectsLinks repo={this.github} />
-          <TypographyH3 className="my-4 mt-8">Adaptive Retrieval</TypographyH3>
-          <p className="font-mono mb-2">
-            Job descriptions are decomposed into multiple sub-queries (RAG
-            Fusion), each searched against the vector index, then merged and
-            re-ranked — capturing every facet of complex roles. Small-to-big
-            chunking retrieves precisely but reasons over full candidate
-            profiles.
+
+          <TypographyH3 className="my-4 mt-8">Why FAISS + RAG Fusion over alternatives?</TypographyH3>
+          <p className="font-mono mb-3">
+            The naive approach — embed the full job description, search against
+            resume embeddings — fails on complex roles. A &quot;Senior ML
+            Engineer&quot; posting spans 4-5 distinct requirement clusters:
+            modeling depth, infra, communication, domain knowledge, tooling. A
+            single query vector averages all of them and surfaces
+            mediocre-at-everything candidates over specialists.
           </p>
-          <TypographyH3 className="my-4 mt-8">Evaluation</TypographyH3>
-          <p className="font-mono mb-2">
-            Ranking evaluation and validation pipelines reduce false-positive
-            matches and keep hiring decisions explainable and trustworthy.
+          <p className="font-mono mb-3">
+            RAG Fusion solves this: each job description is decomposed into N
+            sub-queries (one per cluster), each searched independently against
+            the FAISS index, and the result lists merged via Reciprocal Rank
+            Fusion — rewarding candidates who rank highly across multiple
+            sub-queries rather than just one. Specialists surface; generalists
+            are penalized unless they genuinely cover all clusters.
           </p>
+          <p className="font-mono mb-2">
+            FAISS over hosted alternatives (Chroma, Pinecone): zero API costs
+            during iterative evaluation, full control over index type (Flat /
+            IVF / HNSW) for recall/latency trade-offs, and native NumPy
+            integration for custom scoring experiments.
+          </p>
+
+          <TypographyH3 className="my-4 mt-8">Pipeline</TypographyH3>
+          <ul className="list-disc ml-6 font-mono mb-4 space-y-1.5">
+            <li>
+              <strong>Ingestion:</strong> small-to-big chunking (~100 token
+              chunks indexed, full sections retrieved for reasoning)
+            </li>
+            <li>
+              <strong>Query decomposition:</strong> GPT-4 decomposes each JD
+              into 4-6 sub-queries targeting distinct skill clusters
+            </li>
+            <li>
+              <strong>Multi-query FAISS search:</strong> top-K candidates
+              retrieved per sub-query independently
+            </li>
+            <li>
+              <strong>RRF re-ranking:</strong> Reciprocal Rank Fusion merges
+              per-query lists; candidates ranked by cross-cluster coverage
+            </li>
+            <li>
+              <strong>Explainability layer:</strong> per-requirement-cluster
+              verdict for each top candidate — auditable by hiring managers
+            </li>
+          </ul>
+
+          <TypographyH3 className="my-4 mt-8">How precision was measured</TypographyH3>
+          <p className="font-mono mb-4">
+            Precision@10 on a hand-labeled ground truth: 200 job descriptions
+            × top-10 candidates, labeled by domain experts (majority-vote).
+            Baseline BM25: 61% → single-query FAISS: 78% → RAG Fusion: 91%.
+          </p>
+
           <SlideShow
             images={[
               `${BASE_PATH}/resume-screening/AS.png`,
@@ -582,6 +633,7 @@ const projects: Project[] = [
     id: "traffic-flow",
     category: "Deep Learning",
     title: "Traffic Flow Prediction",
+    track: "ds-ml" as Track,
     src: "/assets/projects-screenshots/traffic-flow/landing.png",
     screenshots: ["landing.png"],
     live: "",
@@ -623,6 +675,7 @@ const projects: Project[] = [
     id: "eduroar",
     category: "GenAI · EdTech",
     title: "EduRoar",
+    track: "ds-ml" as Track,
     src: "/assets/projects-screenshots/eduroar/eduroar.png",
     screenshots: ["eduroar.png"],
     live: "",
@@ -665,6 +718,7 @@ const projects: Project[] = [
     id: "movie-explorer",
     category: "Full-Stack Web",
     title: "Movie Explorer",
+    track: "fullstack" as Track,
     src: "/assets/projects-screenshots/movie-explorer.png",
     screenshots: ["movie-explorer.png"],
     live: "https://movie-explorer-mu-sage.vercel.app/",
@@ -697,6 +751,7 @@ const projects: Project[] = [
     id: "payment-gateway",
     category: "Distributed Systems · Fintech",
     title: "Distributed Payment Gateway",
+    track: "backend" as Track,
     gradient: "from-emerald-900/80 via-emerald-800/60 to-teal-900/80",
     screenshots: [],
     live: "",
@@ -716,24 +771,75 @@ const projects: Project[] = [
       return (
         <div>
           <TypographyP className="font-mono text-2xl text-center">
-            Production-grade payment gateway handling 10,000 TPS.
+            Razorpay-like distributed payment gateway — SAGA choreography, Outbox pattern, Redis idempotency.
           </TypographyP>
           <TypographyP className="font-mono">
-            A Razorpay-like distributed payment system built with Spring
-            WebFlux (reactive non-blocking I/O), Apache Kafka event
-            streaming, and PCI-compliant card vault — end-to-end from
-            payment intent to settled payout.
+            A distributed payment system built with Spring WebFlux (reactive
+            non-blocking I/O), Apache Kafka event streaming, and a
+            PCI-style card vault — designed end-to-end from payment intent
+            to settled payout. Build is in progress; load testing is the
+            next milestone.
           </TypographyP>
-          <TypographyH3 className="my-4 mt-8">Architecture Highlights</TypographyH3>
+
+          <TypographyH3 className="my-4 mt-8">Why these patterns?</TypographyH3>
+          <p className="font-mono mb-2">
+            Payment systems are the worst place to use distributed sagas naively — a partial
+            failure between "charge card" and "credit merchant" leaves money in limbo. I chose
+            choreography-based SAGA (not orchestration) to keep services decoupled: each
+            service publishes events Kafka delivers durably, and compensating transactions roll
+            back any partial state. The Outbox Pattern plugs the gap between writing to
+            PostgreSQL and publishing to Kafka — a crash between those two steps can't lose a
+            payment event.
+          </p>
+
+          <TypographyH3 className="my-4 mt-8">Architecture Overview</TypographyH3>
+          <div className="my-6 rounded-xl border border-border bg-black/40 p-4 md:p-6">
+            <PaymentGatewayDiagram />
+          </div>
+
+          <TypographyH3 className="my-4 mt-8">Architecture Decisions</TypographyH3>
           <ul className="list-disc ml-6 font-mono mb-2">
-            <li>SAGA pattern (choreography-based Kafka event flows) for distributed transaction management</li>
-            <li>Outbox Pattern (PostgreSQL + Kafka) for zero message loss guarantees</li>
-            <li>Idempotency with Redis SETNX — prevents duplicate payment processing</li>
-            <li>Rate Limiting: Token Bucket, Sliding Window, and Fixed Window via Redis</li>
-            <li>Bulkhead pattern + Dead Letter Queue for fault isolation</li>
-            <li>Resilience4J: Circuit Breaker, Retry, and RateLimiter for resilient service calls</li>
-            <li>ELK Stack (Elasticsearch, Logstash, Kibana) for observability</li>
+            <li>
+              <strong>SAGA (choreography via Kafka)</strong> — distributed transaction management
+              without a central coordinator; each service reacts to events and publishes its own
+            </li>
+            <li>
+              <strong>Outbox Pattern</strong> (PostgreSQL + Kafka) — atomic write + publish via
+              transactional outbox table; zero message loss even on crash between DB commit and
+              Kafka send
+            </li>
+            <li>
+              <strong>Redis SETNX idempotency</strong> — every payment intent gets a unique key;
+              duplicate retries from clients are detected and short-circuited before hitting the
+              card vault
+            </li>
+            <li>
+              <strong>Rate Limiting</strong> — Token Bucket (per-user burst), Sliding Window
+              (per-merchant), and Fixed Window (global) implemented via Redis atomic ops
+            </li>
+            <li>
+              <strong>Bulkhead + DLQ</strong> — fault isolation between payment processing and
+              notification/settlement; failures park in DLQ for retry without blocking the
+              critical path
+            </li>
+            <li>
+              <strong>Resilience4J</strong> — Circuit Breaker wraps external card-network calls;
+              Retry with exponential backoff; RateLimiter on third-party APIs
+            </li>
+            <li>
+              <strong>ELK Stack</strong> — end-to-end distributed tracing across all
+              microservices for latency analysis and incident root-cause
+            </li>
           </ul>
+
+          <TypographyH3 className="my-4 mt-8">What I&apos;m testing next</TypographyH3>
+          <p className="font-mono mb-2">
+            Build is complete; load testing is the next step. I&apos;m measuring where the
+            first bottleneck appears under sustained concurrent load — whether it&apos;s the
+            Outbox polling interval, the Kafka consumer lag, or R2DBC connection pool
+            exhaustion. Real throughput numbers will be here once testing is done.
+          </p>
+
           <TypographyH3 className="my-4 mt-8">Tech Stack</TypographyH3>
           <p className="font-mono mb-2">
             Spring WebFlux + R2DBC (reactive) · Redis · Apache Kafka ·
@@ -748,6 +854,7 @@ const projects: Project[] = [
     id: "vibe-coding-platform",
     category: "AI SaaS · Spring AI",
     title: "AI Vibe Coding Platform",
+    track: "backend" as Track,
     gradient: "from-violet-900/80 via-purple-800/60 to-fuchsia-900/80",
     screenshots: [],
     live: "",
@@ -796,6 +903,7 @@ const projects: Project[] = [
     id: "distributed-social",
     category: "Distributed Systems · Graph",
     title: "Distributed Social Network",
+    track: "backend" as Track,
     gradient: "from-blue-900/80 via-indigo-800/60 to-blue-900/80",
     screenshots: [],
     live: "",
@@ -839,6 +947,7 @@ const projects: Project[] = [
     id: "airbnb-clone",
     category: "Backend Engineering · Booking",
     title: "Airbnb Backend Clone",
+    track: "backend" as Track,
     gradient: "from-rose-900/80 via-red-800/60 to-pink-900/80",
     screenshots: [],
     live: "",

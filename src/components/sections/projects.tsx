@@ -17,6 +17,7 @@ import projects, { Project } from "@/data/projects";
 import { SectionHeader } from "./section-header";
 import SectionWrapper from "../ui/section-wrapper";
 import { cn } from "@/lib/utils";
+import { useRoleFilter } from "@/contexts/role-filter";
 
 const PROJECT_METRICS: Record<string, string> = {
   frugalmoments: "Live · Stripe payouts",
@@ -26,7 +27,7 @@ const PROJECT_METRICS: Record<string, string> = {
   "traffic-flow": "87% accuracy · LSTM",
   eduroar: "Google Solution Challenge",
   "movie-explorer": "Shipped in ~3 hrs",
-  "payment-gateway": "10K TPS · SAGA + Outbox",
+  "payment-gateway": "In Progress · SAGA + Outbox",
   "vibe-coding-platform": "Spring AI + RAG + MCP",
   "distributed-social": "Neo4J graph · Kafka fan-out",
   "airbnb-clone": "Geospatial · RBAC · Booking",
@@ -106,7 +107,13 @@ const ProjectDialog = ({ project }: { project: Project }) => (
 
 /* ─── Card variants ─────────────────────────────────────────────── */
 
-const FeaturedCard = ({ project }: { project: Project }) => (
+const FeaturedCard = ({
+  project,
+  dimmed,
+}: {
+  project: Project;
+  dimmed?: boolean;
+}) => (
   <ResponsiveDialog>
     <ResponsiveDialogTrigger asChild>
       <motion.div
@@ -114,9 +121,13 @@ const FeaturedCard = ({ project }: { project: Project }) => (
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
         viewport={{ once: true, margin: "-40px" }}
-        className="group relative overflow-hidden rounded-2xl border border-border cursor-pointer bg-card h-[280px] md:h-[340px]"
+        animate={{ opacity: dimmed ? 0.45 : 1 }}
+        className={cn(
+          "group relative overflow-hidden rounded-2xl border cursor-pointer bg-card h-[280px] md:h-[340px] transition-all duration-400",
+          dimmed ? "border-border/30" : "border-border",
+          !dimmed && "ring-0"
+        )}
       >
-        {/* Background image or gradient */}
         {project.src ? (
           <Image
             src={project.src}
@@ -127,16 +138,13 @@ const FeaturedCard = ({ project }: { project: Project }) => (
         ) : (
           <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient ?? "from-slate-800 to-slate-900"} transition-opacity duration-300`} />
         )}
-        {/* Overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/10" />
-        {/* Live badge */}
         {project.live && (
           <div className="absolute top-4 right-4 flex items-center gap-1.5 bg-black/60 backdrop-blur-sm border border-white/10 rounded-full px-3 py-1">
             <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
             <span className="font-mono text-[10px] text-green-300">Live</span>
           </div>
         )}
-        {/* Content at bottom */}
         <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 flex flex-col md:flex-row md:items-end md:justify-between gap-3">
           <div>
             <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-white/50 mb-1 block">
@@ -165,9 +173,11 @@ const FeaturedCard = ({ project }: { project: Project }) => (
 const MediumCard = ({
   project,
   index,
+  dimmed,
 }: {
   project: Project;
   index: number;
+  dimmed?: boolean;
 }) => (
   <ResponsiveDialog>
     <ResponsiveDialogTrigger asChild>
@@ -176,7 +186,11 @@ const MediumCard = ({
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: index * 0.08 }}
         viewport={{ once: true, margin: "-40px" }}
-        className="group relative overflow-hidden rounded-2xl border border-border cursor-pointer bg-card h-[220px] md:h-[260px]"
+        animate={{ opacity: dimmed ? 0.45 : 1 }}
+        className={cn(
+          "group relative overflow-hidden rounded-2xl border cursor-pointer bg-card h-[220px] md:h-[260px] transition-all duration-400",
+          dimmed ? "border-border/30" : "border-border"
+        )}
       >
         {project.src ? (
           <Image
@@ -212,9 +226,11 @@ const MediumCard = ({
 const SmallCard = ({
   project,
   index,
+  dimmed,
 }: {
   project: Project;
   index: number;
+  dimmed?: boolean;
 }) => (
   <ResponsiveDialog>
     <ResponsiveDialogTrigger asChild>
@@ -223,9 +239,10 @@ const SmallCard = ({
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, delay: index * 0.06 }}
         viewport={{ once: true, margin: "-40px" }}
+        animate={{ opacity: dimmed ? 0.45 : 1 }}
         className={cn(
-          "group relative overflow-hidden rounded-2xl border border-border cursor-pointer bg-card",
-          "h-[180px]"
+          "group relative overflow-hidden rounded-2xl border cursor-pointer bg-card h-[180px] transition-all duration-400",
+          dimmed ? "border-border/30" : "border-border"
         )}
       >
         {project.src ? (
@@ -264,9 +281,13 @@ const SmallCard = ({
 /* ─── Layout ─────────────────────────────────────────────────────── */
 
 const ProjectsSection = () => {
+  const { track } = useRoleFilter();
   const [featured, ...rest] = projects;
   const medium = rest.slice(0, 2);
   const small = rest.slice(2);
+
+  const trackMatch = (p: Project) =>
+    track === "all" || p.track === track;
 
   return (
     <SectionWrapper id="projects" className="max-w-7xl mx-auto py-8">
@@ -279,19 +300,19 @@ const ProjectsSection = () => {
 
       <div className="mt-10 px-4 md:px-8 flex flex-col gap-4">
         {/* Row 1 — Featured */}
-        <FeaturedCard project={featured} />
+        <FeaturedCard project={featured} dimmed={!trackMatch(featured)} />
 
         {/* Row 2 — Medium 2-col */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {medium.map((p, i) => (
-            <MediumCard key={p.id} project={p} index={i} />
+            <MediumCard key={p.id} project={p} index={i} dimmed={!trackMatch(p)} />
           ))}
         </div>
 
         {/* Row 3 — Small 3-col (or 2+1 on smaller) */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {small.map((p, i) => (
-            <SmallCard key={p.id} project={p} index={i} />
+            <SmallCard key={p.id} project={p} index={i} dimmed={!trackMatch(p)} />
           ))}
         </div>
       </div>

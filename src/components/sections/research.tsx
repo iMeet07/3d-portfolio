@@ -10,6 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { TQIPChart } from "@/components/tqip-chart";
 
 const STATS = [
   { value: "9+", label: "co-authored research abstracts" },
@@ -28,8 +29,10 @@ const STUDIES = [
       "Distilled 2.3M trauma-registry patients into a 35,387-patient cohort across 323 variables.",
       "Propensity-score-matched analysis: angioembolization linked to ~40% lower mortality vs observation (OR 0.61, p<0.001).",
       "GAM primary model with AUC 0.876; 2016→2024 trend analysis of treatment adoption and outcomes.",
+      "Caught a silent data-contamination bug during pipeline build: AIS spleen filter was matching prefix '44xx' (thorax) instead of '5442xx' (abdomen → solid organ → spleen). The code ran fine, the counts looked plausible, but the cohort was wrong. Fixed by verifying the full AIS coding schema; confirmed 35,387 matches the original R study.",
     ],
     tags: ["Python", "PSM", "GAM", "SQLite"],
+    showChart: true,
   },
   {
     title: "SGLT2i vs DPP-4i — Cognitive Impairment Risk in T2D",
@@ -92,7 +95,7 @@ const ResearchSection = () => {
           ))}
         </motion.div>
 
-        <motion.p
+        <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.4, delay: 0.1 }}
@@ -113,7 +116,31 @@ const ResearchSection = () => {
               </Badge>
             ))}
           </span>
-        </motion.p>
+        </motion.div>
+
+        {/* TQIP Trend Visualization */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          viewport={{ once: true, margin: "-60px" }}
+          className="mb-10 rounded-2xl border border-border bg-card/50 p-6 md:p-8"
+        >
+          <div className="flex items-start justify-between gap-3 mb-6">
+            <div>
+              <h3 className="font-display text-base font-semibold text-foreground">
+                Blunt Spleen Injury — 8-Year Outcome Trends
+              </h3>
+              <p className="font-mono text-xs text-muted-foreground mt-0.5">
+                2.3M patients → 35,387 cohort · ACS TQIP registry · 2016–2024
+              </p>
+            </div>
+            <Badge variant="secondary" className="shrink-0 font-mono text-[10px]">
+              Real data
+            </Badge>
+          </div>
+          <TQIPChart />
+        </motion.div>
 
         <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
           {STUDIES.map((study, index) => (
