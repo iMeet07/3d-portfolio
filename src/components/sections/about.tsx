@@ -44,6 +44,7 @@ const AboutSection = () => {
         <SectionHeader
           id="about"
           title="About Me"
+          kicker="01 · The Story"
           desc="From Surat to Stony Brook — the story so far."
           className="mb-12 md:mb-16 mt-0"
         />
@@ -78,6 +79,24 @@ const AboutSection = () => {
                   {fact.label}
                 </Badge>
               ))}
+            </div>
+            <div className="flex flex-col gap-3 w-full max-w-[280px] mt-2">
+              <div className="gradient-hairline -rotate-2 rounded-xl border border-border bg-card/60 px-4 py-3 shadow-md">
+                <span className="font-display text-2xl font-bold text-gradient">
+                  1M+
+                </span>
+                <p className="font-mono text-[11px] text-muted-foreground leading-snug">
+                  records/day processed through ETL pipelines I built at IBM
+                </p>
+              </div>
+              <div className="gradient-hairline rotate-2 rounded-xl border border-border bg-card/60 px-4 py-3 shadow-md">
+                <span className="font-display text-2xl font-bold text-gradient">
+                  99.9%
+                </span>
+                <p className="font-mono text-[11px] text-muted-foreground leading-snug">
+                  uptime on 5+ NLP microservices in production at Goldenmace
+                </p>
+              </div>
             </div>
           </motion.div>
 
@@ -118,6 +137,12 @@ const AboutSection = () => {
               </span>
               .
             </p>
+
+            <blockquote className="border-l-2 border-[var(--brand-via)] pl-4 py-1 italic text-foreground/90 text-lg leading-relaxed">
+              Every dataset I&apos;ve touched — trauma registries, resumes,
+              traffic sensors — taught me the same lesson: the impact lives in
+              the messy parts.
+            </blockquote>
 
             <div className="grid gap-3 pt-4">
               {EDUCATION.map((edu) => (

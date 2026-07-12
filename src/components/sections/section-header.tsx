@@ -3,10 +3,15 @@ import Link from "next/link"
 import { BoxReveal } from "../reveal-animations"
 import { ReactNode } from "react"
 
-export const SectionHeader = ({ id, title, desc, className }: { id: string, title: string | ReactNode, desc?: string, className?: string }) => {
+export const SectionHeader = ({ id, title, desc, kicker, className }: { id: string, title: string | ReactNode, desc?: string, kicker?: string, className?: string }) => {
   return (
 
     <div className={cn("top-[70px] sticky mb-96", className)}>
+      {kicker && (
+        <p className="text-center font-mono text-[11px] uppercase tracking-[0.35em] text-muted-foreground/70 mb-2">
+          {kicker}
+        </p>
+      )}
       <Link href={`#${id}`}>
         <BoxReveal width="100%">
           <h2

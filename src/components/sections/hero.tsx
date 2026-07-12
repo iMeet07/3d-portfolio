@@ -122,8 +122,19 @@ const HeroSection = () => {
                 <BlurIn delay={1.4}>
                   <p
                     className={cn(
-                      "md:self-start mt-1 font-thin text-sm text-slate-500 dark:text-zinc-400",
-                      "cursor-default sm:text-base whitespace-nowrap"
+                      "md:self-start mt-2 text-sm text-slate-500 dark:text-zinc-400",
+                      "cursor-default sm:text-base max-w-md leading-relaxed"
+                    )}
+                  >
+                    From 300K-patient hospital datasets to multi-agent LLM
+                    pipelines — I build AI that makes messy data useful.
+                  </p>
+                </BlurIn>
+                <BlurIn delay={1.5}>
+                  <p
+                    className={cn(
+                      "md:self-start mt-1 font-mono text-xs text-slate-400 dark:text-zinc-500",
+                      "cursor-default whitespace-nowrap"
                     )}
                   >
                     MS in Data Science @ Stony Brook University

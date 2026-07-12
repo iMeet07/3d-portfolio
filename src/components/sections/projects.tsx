@@ -20,7 +20,7 @@ import SectionWrapper from "../ui/section-wrapper";
 const ProjectsSection = () => {
   return (
     <SectionWrapper id="projects" className="max-w-7xl mx-auto md:h-[130vh]">
-      <SectionHeader id="projects" title="Projects" />
+      <SectionHeader id="projects" title="Projects" kicker="05 · Selected Builds" desc="Research systems, LLM pipelines, and a live startup." />
       <div className="grid grid-cols-1 md:grid-cols-3">
         {projects.map((project) => (
           <ProjectCard key={project.id} project={project} />

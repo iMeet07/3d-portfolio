@@ -11,6 +11,7 @@ import ContactSection from "@/components/sections/contact";
 import HeroSection from "@/components/sections/hero";
 import AboutSection from "@/components/sections/about";
 import ResearchSection from "@/components/sections/research";
+import ToolkitSection from "@/components/sections/toolkit";
 
 function MainPage() {
   return (
@@ -20,6 +21,7 @@ function MainPage() {
         <HeroSection />
         <AboutSection />
         <SkillsSection />
+        <ToolkitSection />
         <ExperienceSection />
         <ResearchSection />
         <ProjectsSection />

@@ -144,7 +144,7 @@ const AnimatedBackground = () => {
     // Section transitions (page order: hero → about → skills → experience → research → projects → contact)
     createSectionTimeline("#about", "about", "hero", "top 60%");
     createSectionTimeline("#skills", "skills", "about");
-    createSectionTimeline("#experience", "experience", "skills", "top 60%");
+    createSectionTimeline("#toolkit", "experience", "skills", "top 75%");
     createSectionTimeline("#research", "research", "experience", "top 60%");
     createSectionTimeline("#projects", "projects", "research", "top 70%");
     createSectionTimeline("#contact", "contact", "projects", "top 30%");

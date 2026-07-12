@@ -54,6 +54,7 @@ const ResearchSection = () => {
         <SectionHeader
           id="research"
           title="Research"
+          kicker="04 · Published Work"
           desc="Clinical AI on population-scale health data."
           className="mb-12 md:mb-16 mt-0"
         />
