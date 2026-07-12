@@ -2,6 +2,8 @@ import SlideShow from "@/components/slide-show";
 import { Button } from "@/components/ui/button";
 import { TypographyH3, TypographyP } from "@/components/ui/typography";
 import { PaymentGatewayDiagram } from "@/components/payment-gateway-diagram";
+import { DeepWriteDiagram } from "@/components/deepwrite-diagram";
+import { MultimodalDiagram } from "@/components/multimodal-diagram";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { ReactNode } from "react";
@@ -368,35 +370,59 @@ const projects: Project[] = [
       return (
         <div>
           <TypographyP className="font-mono text-2xl text-center">
-            &quot;Your social life, bundled.&quot;
+            Activity + food for your squad — one booking, split payment built in.
           </TypographyP>
-          <TypographyP className="font-mono ">
-            FrugalMoments is a lifestyle bundle marketplace I&apos;m building
-            solo — book any activity + food/drink in one flow. One price, one
-            confirmation, split payment handled automatically.
-            &quot;Bowling + wings for 8 people, Saturday 7pm — $240 total,
-            split automatically.&quot;
+          <TypographyP className="font-mono">
+            FrugalMoments is a group outing marketplace I&apos;m building solo
+            on Long Island — curated activity + dining bundles (escape room +
+            hibachi, axe throwing + craft beer, paint &amp; sip + wine bar)
+            with unified booking and automatic split payments. No apps to
+            download, no group chats about who paid.
           </TypographyP>
           <ProjectsLinks live={this.live} />
+
+          {/* Traction */}
+          <div className="grid grid-cols-3 gap-3 my-6">
+            {[
+              { v: "847", l: "waitlist signups" },
+              { v: "25", l: "venue partners selected" },
+              { v: "75+", l: "bookings / month across bundles" },
+            ].map(({ v, l }) => (
+              <div key={l} className="rounded-lg border border-border/50 bg-card/40 p-3 text-center">
+                <div className="font-display text-xl font-bold text-gradient">{v}</div>
+                <div className="font-mono text-[10px] text-muted-foreground mt-0.5 leading-snug">{l}</div>
+              </div>
+            ))}
+          </div>
+
           <SlideShow images={[`${BASE_PATH}/frugalmoments/landing.png`]} />
-          <TypographyH3 className="my-4 mt-8">Built end-to-end</TypographyH3>
-          <p className="font-mono mb-2">
-            Vendor listings, bundles, time slots, group bookings, and split
-            payments via Stripe Connect Express with automatic vendor payouts.
-            Supabase Postgres with row-level security handles auth, data, and
-            storage.
+
+          <TypographyH3 className="my-4 mt-8">The Stripe decision</TypographyH3>
+          <p className="font-mono mb-3">
+            The hard part isn&apos;t taking payment — it&apos;s splitting it
+            across a group and paying out two separate vendors. Stripe Connect
+            Express handles both: each participant gets an individual payment
+            link (Apple Pay / Google Pay / card), and once all payments clear,
+            Stripe automatically routes the venue cuts to two separate Connect
+            accounts. Funds hit vendor Stripe accounts 24 hours after the event
+            ends — no manual reconciliation.
           </p>
-          <TypographyH3 className="my-4 mt-8">AI Concierge</TypographyH3>
-          <p className="font-mono mb-2">
-            An Anthropic Claude-powered concierge helps groups pick and plan
-            their perfect outing — plus full-text search, feed scoring,
-            wishlists, and recurring &quot;habit mode&quot; bookings.
+          <p className="font-mono mb-3">
+            The alternative was PaymentIntents + manual Transfer API calls, but
+            Connect Express gives vendors a hosted dashboard and handles KYC,
+            1099 generation, and international payouts without me owning any of
+            that compliance surface. Worth the 0.25% platform fee.
           </p>
-          <TypographyH3 className="my-4 mt-8">Production-grade</TypographyH3>
+
+          <TypographyH3 className="my-4 mt-8">Built end-to-end, solo</TypographyH3>
           <p className="font-mono mb-2">
-            Resend email + Twilio SMS notifications, PostHog analytics, Sentry
-            error tracking, PWA with web push, and 9 scheduled cron jobs on
-            Vercel. B2C for friend groups, B2B invoicing for corporate events.
+            Vendor listings, bundle curation, time-slot management, group
+            bookings, and real-time payment tracking (organizer sees who&apos;s
+            paid). Supabase Postgres with row-level security for auth + data.
+            Claude-powered AI concierge for outing recommendations. Resend +
+            Twilio for email/SMS confirmations. PostHog analytics, Sentry error
+            tracking, PWA + web push, 9 Vercel cron jobs, B2B invoicing for
+            corporate events.
           </p>
         </div>
       );
@@ -427,30 +453,68 @@ const projects: Project[] = [
           <TypographyP className="font-mono text-2xl text-center">
             9 AI agents. 1 technical blog post. Under 90 seconds.
           </TypographyP>
-          <TypographyP className="font-mono ">
-            DeepWrite is an agentic planning &amp; research engine — a
-            LangGraph pipeline where each agent has exactly one job: research,
-            plan, write, critique, fact-check, and SEO-audit a full technical
-            article, end to end. Built for the LLM course (AMS 691) at Stony
-            Brook University.
+          <TypographyP className="font-mono">
+            DeepWrite is a 9-node LangGraph pipeline where each agent has
+            exactly one job — research, plan, write, critique, fact-check, and
+            SEO-audit a full technical article end to end. Built for AMS 691
+            (LLM Frontier) at Stony Brook University.
           </TypographyP>
           <ProjectsLinks repo={this.github} />
-          <SlideShow images={[`${BASE_PATH}/deepwrite/landing.png`]} />
-          <TypographyH3 className="my-4 mt-8">The Pipeline</TypographyH3>
-          <p className="font-mono mb-2">
-            Router → Memory (ChromaDB recalls your writing style) → Web
-            Research (Tavily) → Orchestrator → parallel Writer agents with a
-            Critic loop (sections scoring below 6.5/10 get auto-revised) →
-            Reducer → Fact-Checker → SEO Audit.
+
+          <TypographyH3 className="my-4 mt-8">Why LangGraph over vanilla chains?</TypographyH3>
+          <p className="font-mono mb-3">
+            Three things vanilla LangChain chains can&apos;t do cleanly: parallel
+            execution, conditional branching, and revision loops. The Writer
+            agents run in parallel — each owns one section of the outline,
+            which cuts wall-clock time significantly. The Critic creates a
+            feedback loop: sections scoring below 6.5/10 re-enter the Writer
+            stage (max 2 attempts) before the pipeline continues. And the
+            Router conditionally forks to the Research node only when live web
+            data is needed — no wasted Tavily API calls for topics the model
+            already knows well.
           </p>
-          <TypographyH3 className="my-4 mt-8">Highlights</TypographyH3>
-          <ul className="list-disc ml-6 font-mono mb-2">
-            <li>Live pipeline tracker — watch every node complete in real time</li>
-            <li>AI editor chat with undo stack for post-generation edits</li>
-            <li>Writer memory that improves style match over time</li>
-            <li>Per-claim fact-check verdicts with confidence and sources</li>
-            <li>Draft history in SQLite + styled single-file HTML export</li>
-          </ul>
+          <p className="font-mono mb-4">
+            All of that is a directed acyclic graph with one cycle (the
+            Critic loop). LangGraph makes that first-class. With vanilla chains
+            you&apos;d be managing state dicts and conditional logic manually.
+          </p>
+
+          <TypographyH3 className="my-4 mt-8">Pipeline</TypographyH3>
+          <div className="rounded-xl border border-border/40 bg-card/30 p-4 md:p-6 mb-4">
+            <DeepWriteDiagram />
+          </div>
+
+          <TypographyH3 className="my-4 mt-8">The 9 agents</TypographyH3>
+          <div className="overflow-x-auto">
+            <table className="w-full font-mono text-sm border-collapse">
+              <thead>
+                <tr className="border-b border-border/50">
+                  <th className="text-left py-2 pr-4 text-muted-foreground font-normal text-[11px] uppercase tracking-wider">Agent</th>
+                  <th className="text-left py-2 text-muted-foreground font-normal text-[11px] uppercase tracking-wider">Role</th>
+                </tr>
+              </thead>
+              <tbody className="text-[12px]">
+                {[
+                  ["Router", "Classifies whether live web research is needed — skips Research node if not"],
+                  ["Memory", "Queries ChromaDB for past articles; extracts style patterns for consistency"],
+                  ["Research", "Fires up to 2 Tavily API queries; returns sourced evidence"],
+                  ["Orchestrator", "Generates structured outline with sections and word-count targets"],
+                  ["Writers (×N)", "Write assigned sections in parallel — each owns one piece of the article"],
+                  ["Critic", "Scores each section 0–10; sections below 6.5 loop back to Writers (max 2×)"],
+                  ["Reducer", "Merges parallel sections into a coherent, styled article"],
+                  ["Fact-Checker", "Validates every factual claim against Research sources; flags unsupported assertions"],
+                  ["SEO Audit", "Scores keyword density, readability, heading structure (0–100); suggests improvements"],
+                ].map(([agent, role]) => (
+                  <tr key={agent} className="border-b border-border/30 hover:bg-card/30 transition-colors">
+                    <td className="py-2.5 pr-4 text-foreground/80 font-medium whitespace-nowrap">{agent}</td>
+                    <td className="py-2.5 text-muted-foreground leading-relaxed">{role}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <SlideShow images={[`${BASE_PATH}/deepwrite/landing.png`]} />
         </div>
       );
     },
@@ -484,47 +548,61 @@ const projects: Project[] = [
       return (
         <div>
           <TypographyP className="font-mono text-2xl text-center">
-            A local-first AI assistant — your data never leaves your machine.
+            Local-first AI — 5 modalities, zero data leaving your machine.
           </TypographyP>
-          <TypographyP className="font-mono ">
-            Built with LangChain, Chainlit, and Ollama for fully local LLM
-            inference. RAG-based interactions across 5+ data modalities — PDFs,
-            images, code, CSVs, and web content — with response consistency up
-            35% and query latency down 28%.
+          <TypographyP className="font-mono">
+            Built with LangChain, Chainlit, and Ollama for fully offline LLM
+            inference. A single assistant that routes across 5 distinct input
+            modalities — documents, voice, image generation, web search, and
+            persistent chat memory — with cloud observability via Literal AI.
           </TypographyP>
           <ProjectsLinks repo={this.github} />
-          <TypographyH3 className="my-4 mt-8">Chat with anything</TypographyH3>
-          <p className="font-mono mb-2">
-            Document-aware conversations over PDF, TXT, code, DOCX, images and
-            CSV — powered by modular retrieval pipelines with chunk ranking and
-            citation tracking, supporting 1000+ document pages per session.
-          </p>
+
+          <TypographyH3 className="my-4 mt-8">Routing architecture</TypographyH3>
+          <div className="rounded-xl border border-border/40 bg-card/30 p-4 md:p-6 mb-4">
+            <MultimodalDiagram />
+          </div>
+
+          <TypographyH3 className="my-4 mt-8">The 5 modalities</TypographyH3>
+          <div className="space-y-3 mb-4">
+            {[
+              {
+                title: "📄 Document Understanding",
+                body: "RAG pipeline over PDF, TXT, DOCX, code, CSV, and images. Small-to-big chunking: ~100 token chunks indexed in FAISS, full sections retrieved for reasoning. 1000+ page sessions supported.",
+              },
+              {
+                title: "🎙️ Voice Interaction",
+                body: "Speech-to-text → LLM reasoning → text-to-speech pipeline. Natural voice conversation without any cloud ASR service — fully local.",
+              },
+              {
+                title: "🎨 Image Generation",
+                body: "Stable Diffusion (CompVis/stable-diffusion-v1-4) runs locally via the Diffusers library. Text prompt → image inline in chat.",
+              },
+              {
+                title: "🌐 Web Intelligence",
+                body: "Wikipedia and DuckDuckGo search + BeautifulSoup HTML scraping. Triggered by intent detection — 'wikipedia quantum entanglement' routes automatically to the web tool.",
+              },
+              {
+                title: "💬 Chat Continuity",
+                body: "Session persistence and resumption via Literal AI — full conversation history, cloud sync for cross-device continuity, and observability dashboards for latency and token usage.",
+              },
+            ].map(({ title, body }) => (
+              <div key={title} className="rounded-lg border border-border/40 bg-card/30 p-3.5">
+                <div className="font-mono text-sm font-semibold text-foreground/90 mb-1">{title}</div>
+                <div className="font-mono text-[12px] text-muted-foreground leading-relaxed">{body}</div>
+              </div>
+            ))}
+          </div>
+
           <SlideShow
             images={[
+              `${BASE_PATH}/multimodal/chat_profiles_llm.png`,
               `${BASE_PATH}/multimodal/chat_pdf.png`,
               `${BASE_PATH}/multimodal/chat_image.png`,
               `${BASE_PATH}/multimodal/chat_csv.png`,
-            ]}
-          />
-          <TypographyH3 className="my-4 mt-8">Voice + Vision</TypographyH3>
-          <p className="font-mono mb-2">
-            Speech-to-text and text-to-speech for natural voice interaction,
-            plus local image generation with Stable Diffusion.
-          </p>
-          <SlideShow
-            images={[
               `${BASE_PATH}/multimodal/voice_chat.png`,
               `${BASE_PATH}/multimodal/image_generation.png`,
             ]}
-          />
-          <TypographyH3 className="my-4 mt-8">Observability</TypographyH3>
-          <p className="font-mono mb-2">
-            Persistent memory, resumable chats, and cloud observability via
-            LiteralAI for performance monitoring — an extensible, agent-based
-            architecture ready for new capabilities.
-          </p>
-          <SlideShow
-            images={[`${BASE_PATH}/multimodal/chat_profiles_llm.png`]}
           />
         </div>
       );
@@ -650,22 +728,48 @@ const projects: Project[] = [
       return (
         <div>
           <TypographyP className="font-mono text-2xl text-center">
-            Forecasting city traffic with 87% accuracy.
+            Spatio-temporal LSTM predicting urban traffic flow — 87% accuracy on held-out test set.
           </TypographyP>
-          <TypographyP className="font-mono ">
-            A real-time traffic flow prediction system using spatio-temporal
-            LSTM models across multiple urban intersections — integrating
-            historical traffic and weather data to help city planners reduce
-            congestion. Traffic analysis latency down 42%.
+          <TypographyP className="font-mono">
+            A deep learning system that forecasts per-intersection traffic
+            volume by jointly modeling historical traffic patterns and
+            meteorological conditions. Built to help city planners anticipate
+            congestion rather than react to it.
           </TypographyP>
           <ProjectsLinks repo={this.github} />
           <SlideShow images={[`${BASE_PATH}/traffic-flow/landing.png`]} />
-          <TypographyH3 className="my-4 mt-8">How it works</TypographyH3>
-          <ul className="list-disc ml-6 font-mono mb-2">
-            <li>Automated preprocessing pipelines clean and structure traffic + weather data</li>
-            <li>Spatio-temporal LSTM forecasts flow per intersection in real time</li>
-            <li>MAE &amp; RMSE evaluation keeps forecasts robust and reliable</li>
-            <li>Interactive Streamlit dashboard visualizes predictions vs history</li>
+
+          <TypographyH3 className="my-4 mt-8">What &quot;spatio-temporal&quot; means here</TypographyH3>
+          <p className="font-mono mb-3">
+            Standard time-series models treat each intersection independently.
+            But traffic flow is spatially correlated — congestion at one
+            intersection propagates upstream and downstream. The LSTM input
+            includes both the temporal sequence (historical volume at this
+            intersection) and spatial context (volume readings from adjacent
+            intersections), letting the model learn propagation patterns rather
+            than just local trends.
+          </p>
+
+          <TypographyH3 className="my-4 mt-8">What 87% accuracy means</TypographyH3>
+          <p className="font-mono mb-3">
+            The 87% is directional accuracy on a held-out test set —
+            the model correctly predicts whether flow will increase, decrease,
+            or stay stable at the next time step. Regression quality is
+            evaluated with MAE and RMSE against the ground-truth volume
+            counts. Directional accuracy matters most for real-world use:
+            a city planner acting on &quot;congestion building&quot; vs
+            &quot;congestion clearing&quot; signals doesn&apos;t need exact
+            vehicle counts, just reliable trend direction.
+          </p>
+
+          <TypographyH3 className="my-4 mt-8">Input features + pipeline</TypographyH3>
+          <ul className="list-disc ml-6 font-mono mb-3 space-y-1.5 text-sm">
+            <li><strong>Traffic features:</strong> historical volume per intersection (sliding window), speed, occupancy</li>
+            <li><strong>Weather features:</strong> temperature, precipitation, visibility — sourced from OpenWeatherMap API</li>
+            <li><strong>Preprocessing:</strong> automated pipelines handle missing sensors, outlier capping, min-max normalization per intersection</li>
+            <li><strong>Model:</strong> stacked LSTM layers with dropout; trained with Adam optimizer, early stopping on validation MAE</li>
+            <li><strong>Output:</strong> volume forecast per intersection, N steps ahead</li>
+            <li><strong>Dashboard:</strong> Streamlit app showing predicted vs actual flow with time-series overlays and intersection selector</li>
           </ul>
         </div>
       );
