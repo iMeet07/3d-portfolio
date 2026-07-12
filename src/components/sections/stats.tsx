@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useInView } from "motion/react";
+import { motion, useInView } from "motion/react";
 import { cn } from "@/lib/utils";
 
 const STATS = [
@@ -44,6 +44,10 @@ function Counter({
 
   useEffect(() => {
     if (!isInView) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setCount(value);
+      return;
+    }
     const duration = 1600 + index * 150;
     const start = performance.now();
     const animate = (now: number) => {
@@ -57,8 +61,11 @@ function Counter({
   }, [isInView, value, index]);
 
   return (
-    <div
+    <motion.div
       ref={ref}
+      initial={{ opacity: 0, y: 14 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.5, delay: index * 0.1, ease: "easeOut" }}
       className={cn(
         "flex flex-col items-center text-center px-4 py-8",
         "border-border/40",
@@ -75,7 +82,7 @@ function Counter({
       <span className="mt-1 font-mono text-[10px] text-muted-foreground/60 max-w-[160px]">
         {detail}
       </span>
-    </div>
+    </motion.div>
   );
 }
 

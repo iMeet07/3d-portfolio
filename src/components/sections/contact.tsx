@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { motion } from "motion/react";
-import { Mail, Linkedin, Github, Clock, Zap, Coffee } from "lucide-react";
+import { Mail, Clock, Zap, Coffee, BrainCircuit, Server, FlaskConical } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import ContactForm from "../ContactForm";
 import { config } from "@/data/config";
@@ -106,6 +106,45 @@ const ContactRight = () => (
           <span className="font-mono text-[11px] text-foreground font-medium">
             {item.value}
           </span>
+        </div>
+      ))}
+    </div>
+
+    {/* What I'm looking for */}
+    <div className="flex flex-col gap-2">
+      <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground/60 mb-1">
+        What I&apos;m looking for
+      </p>
+      {[
+        {
+          icon: <BrainCircuit className="w-4 h-4 shrink-0" />,
+          color: "#a78bfa",
+          title: "AI/ML & Research Engineering",
+          desc: "Production LLM pipelines, RAG systems, clinical AI, NLP tooling",
+        },
+        {
+          icon: <Server className="w-4 h-4 shrink-0" />,
+          color: "#60a5fa",
+          title: "Backend / Platform",
+          desc: "Distributed microservices, Spring Boot + Kafka, data-intensive APIs",
+        },
+        {
+          icon: <FlaskConical className="w-4 h-4 shrink-0" />,
+          color: "#34d399",
+          title: "Research Collaboration",
+          desc: "Clinical data science, EHR analysis, outcomes research with publication potential",
+        },
+      ].map((item) => (
+        <div
+          key={item.title}
+          className="flex items-start gap-3 rounded-xl border border-border/60 px-4 py-3 bg-card/30"
+          style={{ borderColor: `${item.color}25` }}
+        >
+          <span style={{ color: item.color }} className="mt-0.5">{item.icon}</span>
+          <div>
+            <p className="font-mono text-xs font-medium text-foreground/90">{item.title}</p>
+            <p className="font-mono text-[10px] text-muted-foreground/60 mt-0.5 leading-snug">{item.desc}</p>
+          </div>
         </div>
       ))}
     </div>

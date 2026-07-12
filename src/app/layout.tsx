@@ -53,6 +53,32 @@ const spaceGrotesk = Space_Grotesk({
   variable: "--font-display",
 });
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: config.author,
+  url: config.site,
+  email: config.email,
+  image: config.ogImg,
+  jobTitle: "AI/ML Engineer & Data Scientist",
+  description: config.description.short,
+  alumniOf: {
+    "@type": "CollegeOrUniversity",
+    name: "Stony Brook University",
+  },
+  sameAs: [config.social.linkedin, config.social.github].filter(Boolean),
+  knowsAbout: [
+    "Machine Learning",
+    "Large Language Models",
+    "Data Science",
+    "Natural Language Processing",
+    "Retrieval-Augmented Generation",
+    "LangChain",
+    "PyTorch",
+    "Next.js",
+  ],
+};
+
 export default function RootLayout({
   children,
 }: {
@@ -61,6 +87,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={[inter.variable, spaceGrotesk.variable, "font-display"].join(" ")} suppressHydrationWarning>
       <head>
+        <Script
+          id="json-ld-person"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         <Script
           defer
           src={process.env.UMAMI_DOMAIN}
