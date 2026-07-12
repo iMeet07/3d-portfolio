@@ -58,7 +58,7 @@ export async function POST(req: Request) {
 
     const { data: resendData, error: resendError } = await client.emails.send({
       from: "Portfolio Contact <onboarding@resend.dev>",
-      to: [config.email],
+      to: [process.env.RESEND_TO ?? config.email],
       replyTo: zodData.email,
       subject: `[Portfolio] Message from ${zodData.fullName}`,
       react: EmailTemplate({
