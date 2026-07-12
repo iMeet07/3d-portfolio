@@ -278,6 +278,66 @@ export default function SkillSphere() {
     };
     window.addEventListener("mousemove", onMouseMove);
 
+    // ── SHARED ACTIVATE / DEACTIVATE ─────────────────────────────────────────
+    const activateNode = (nd: NodeData) => {
+      gsap.to(nd.mesh.scale, { x: 3.2, y: 3.2, z: 3.2, duration: 0.4, ease: "back.out(1.7)" });
+      gsap.to(nd.glow.material as THREE.MeshBasicMaterial, { opacity: 0.6, duration: 0.3 });
+      gsap.to(nd.ring.material as THREE.MeshBasicMaterial, { opacity: 0.75, duration: 0.3 });
+      (nd.mesh.material as THREE.MeshStandardMaterial).emissiveIntensity = 7;
+      soundRefs.current.press();
+      setSelectedSkill(nd.skill);
+    };
+
+    const deactivateNode = (nd: NodeData) => {
+      gsap.to(nd.mesh.scale, { x: 1, y: 1, z: 1, duration: 0.4, ease: "power2.out" });
+      gsap.to(nd.glow.material as THREE.MeshBasicMaterial, { opacity: 0.22, duration: 0.4 });
+      gsap.to(nd.ring.material as THREE.MeshBasicMaterial, { opacity: 0, duration: 0.25 });
+      (nd.mesh.material as THREE.MeshStandardMaterial).emissiveIntensity = 2.2;
+      soundRefs.current.release();
+      setSelectedSkill(null);
+    };
+
+    // ── MOBILE TOUCH ─────────────────────────────────────────────────────────
+    let touchDismissTimer: ReturnType<typeof setTimeout> | null = null;
+
+    const onTouchEnd = (e: TouchEvent) => {
+      if (!e.changedTouches.length) return;
+      const touch = e.changedTouches[0];
+      const tx = (touch.clientX / window.innerWidth) * 2 - 1;
+      const ty = -(touch.clientY / window.innerHeight) * 2 + 1;
+
+      raycaster.setFromCamera(new THREE.Vector2(tx, ty), camera);
+      const hits = raycaster.intersectObjects(nodeMeshes, false);
+      const hit = hits.length > 0 ? (nodes.find(n => n.mesh === hits[0].object) ?? null) : null;
+
+      if (touchDismissTimer) clearTimeout(touchDismissTimer);
+
+      if (hit && hit === hoveredNode) {
+        // Tap same node → dismiss
+        deactivateNode(hoveredNode);
+        hoveredNode = null;
+        return;
+      }
+
+      if (hoveredNode) {
+        deactivateNode(hoveredNode);
+        hoveredNode = null;
+      }
+
+      if (hit) {
+        hoveredNode = hit;
+        activateNode(hit);
+        touchDismissTimer = setTimeout(() => {
+          if (hoveredNode === hit) {
+            deactivateNode(hit);
+            hoveredNode = null;
+          }
+        }, 4000);
+      }
+    };
+
+    renderer.domElement.addEventListener("touchend", onTouchEnd);
+
     // ── ANIMATION LOOP ────────────────────────────────────────────────────────
     let rotSpeed = SECTION_CAMERA.hero.speed;
     let raf: number;
@@ -326,25 +386,8 @@ export default function SkillSphere() {
       const hit = hits.length > 0 ? (nodes.find(n => n.mesh === hits[0].object) ?? null) : null;
 
       if (hit !== hoveredNode) {
-        // Un-hover previous
-        if (hoveredNode) {
-          const nd = hoveredNode;
-          gsap.to(nd.mesh.scale, { x: 1, y: 1, z: 1, duration: 0.4, ease: "power2.out" });
-          gsap.to(nd.glow.material as THREE.MeshBasicMaterial, { opacity: 0.22, duration: 0.4 });
-          gsap.to(nd.ring.material as THREE.MeshBasicMaterial, { opacity: 0, duration: 0.25 });
-          (nd.mesh.material as THREE.MeshStandardMaterial).emissiveIntensity = 2.2;
-          soundRefs.current.release();
-          setSelectedSkill(null);
-        }
-        // Hover new
-        if (hit) {
-          gsap.to(hit.mesh.scale, { x: 3.2, y: 3.2, z: 3.2, duration: 0.4, ease: "back.out(1.7)" });
-          gsap.to(hit.glow.material as THREE.MeshBasicMaterial, { opacity: 0.6, duration: 0.3 });
-          gsap.to(hit.ring.material as THREE.MeshBasicMaterial, { opacity: 0.75, duration: 0.3 });
-          (hit.mesh.material as THREE.MeshStandardMaterial).emissiveIntensity = 7;
-          soundRefs.current.press();
-          setSelectedSkill(hit.skill);
-        }
+        if (hoveredNode) deactivateNode(hoveredNode);
+        if (hit) activateNode(hit);
         hoveredNode = hit;
       }
 
@@ -399,8 +442,10 @@ export default function SkillSphere() {
     // ── CLEANUP ───────────────────────────────────────────────────────────────
     return () => {
       cancelAnimationFrame(raf);
+      if (touchDismissTimer) clearTimeout(touchDismissTimer);
       window.removeEventListener("mousemove", onMouseMove);
       window.removeEventListener("resize", onResize);
+      renderer.domElement.removeEventListener("touchend", onTouchEnd);
       ScrollTrigger.getAll().forEach(st => st.kill());
       renderer.dispose();
       if (container.contains(renderer.domElement)) container.removeChild(renderer.domElement);

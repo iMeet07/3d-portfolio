@@ -7,7 +7,6 @@ import { Textarea } from "./ui/ace-textarea";
 import { cn } from "@/lib/utils";
 import { useToast } from "./ui/use-toast";
 import { Button } from "./ui/button";
-import { useRouter } from "next/navigation";
 import { z } from "zod";
 
 const formSchema = z.object({
@@ -26,7 +25,6 @@ const ContactForm = () => {
   const [errors, setErrors] = React.useState<FieldErrors>({});
 
   const { toast } = useToast();
-  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -50,35 +48,30 @@ const ContactForm = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ fullName, email, message }),
       });
+      const data = await res.json();
       if (!res.ok) {
-        const data = await res.json();
         throw new Error(data.error || `Request failed (${res.status})`);
       }
-      toast({
-        title: "Thank you!",
-        description: "I'll get back to you as soon as possible.",
-        variant: "default",
-        className: cn("top-0 mx-auto flex fixed md:top-4 md:right-4"),
-      });
-      setLoading(false);
       setFullName("");
       setEmail("");
       setMessage("");
-      const timer = setTimeout(() => {
-        router.push("/");
-        clearTimeout(timer);
-      }, 1000);
-    } catch (err) {
       toast({
-        title: "Error",
-        description: "Something went wrong! Please try again.",
-        className: cn(
-          "top-0 w-full flex justify-center fixed md:max-w-7xl md:top-4 md:right-4"
-        ),
+        title: "Message sent!",
+        description: "Thanks for reaching out — I'll get back to you within 24 hours.",
+        variant: "default",
+        className: cn("top-0 mx-auto flex fixed md:top-4 md:right-4"),
+      });
+    } catch (err) {
+      const description = err instanceof Error ? err.message : "Something went wrong. Please try again.";
+      toast({
+        title: "Couldn't send message",
+        description,
+        className: cn("top-0 w-full flex justify-center fixed md:max-w-7xl md:top-4 md:right-4"),
         variant: "destructive",
       });
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
   return (
     <form className="min-w-7xl mx-auto sm:mt-4" onSubmit={handleSubmit} aria-busy={loading}>
