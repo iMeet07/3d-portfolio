@@ -296,6 +296,7 @@ const ProjectsSection = () => {
         title="Projects"
         kicker="05 · Selected Builds"
         desc="Research systems, LLM pipelines, and a live startup."
+        className="mb-8 md:mb-96"
       />
 
       <div className="mt-10 px-4 md:px-8 flex flex-col gap-4">
