@@ -63,7 +63,7 @@ const AboutSection = () => {
                 alt="Meet Brahmbhatt"
                 fill
                 sizes="(max-width: 768px) 224px, 288px"
-                className="relative rounded-2xl object-cover border border-border shadow-lg"
+                className="relative rounded-2xl object-cover border border-border shadow-lg aurora-glow"
                 priority={false}
               />
             </div>

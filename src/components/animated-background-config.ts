@@ -1,4 +1,11 @@
-export type Section = "hero" | "about" | "skills" | "experience" | "projects" | "contact";
+export type Section =
+  | "hero"
+  | "about"
+  | "skills"
+  | "experience"
+  | "research"
+  | "projects"
+  | "contact";
 
 export const STATES = {
   hero: {
@@ -13,19 +20,20 @@ export const STATES = {
       rotation: { x: 0, y: 0, z: 0 },
     },
   },
+  // Docked small in the bottom-right corner so About content stays readable
   about: {
     desktop: {
-      scale: { x: 0.4, y: 0.4, z: 0.4 },
-      position: { x: 0, y: -40, z: 0 },
+      scale: { x: 0.1, y: 0.1, z: 0.1 },
+      position: { x: 520, y: -320, z: 0 },
       rotation: {
         x: 0,
-        y: Math.PI / 12,
+        y: Math.PI / 8,
         z: 0,
       },
     },
     mobile: {
-      scale: { x: 0.4, y: 0.4, z: 0.4 },
-      position: { x: 0, y: -40, z: 0 },
+      scale: { x: 0.12, y: 0.12, z: 0.12 },
+      position: { x: 0, y: -320, z: 0 },
       rotation: {
         x: 0,
         y: Math.PI / 6,
@@ -33,22 +41,44 @@ export const STATES = {
       },
     },
   },
+  // Docked small in the bottom-left corner during the experience timeline
   experience: {
     desktop: {
-      scale: { x: 0.25, y: 0.25, z: 0.25 },
-      position: { x: 0, y: -40, z: 0 },
+      scale: { x: 0.1, y: 0.1, z: 0.1 },
+      position: { x: -520, y: -320, z: 0 },
       rotation: {
-        x: Math.PI / 12, // Slight tilt forward
-        y: -Math.PI / 4, // Rotate opposite to skills
+        x: Math.PI / 12,
+        y: -Math.PI / 4,
         z: 0,
       },
     },
     mobile: {
-      scale: { x: 0.3, y: 0.3, z: 0.3 },
-      position: { x: 0, y: -40, z: 0 },
+      scale: { x: 0.12, y: 0.12, z: 0.12 },
+      position: { x: 0, y: -320, z: 0 },
       rotation: {
         x: Math.PI / 6,
         y: -Math.PI / 6,
+        z: 0,
+      },
+    },
+  },
+  // Docked small in the bottom-right corner during research cards
+  research: {
+    desktop: {
+      scale: { x: 0.1, y: 0.1, z: 0.1 },
+      position: { x: 520, y: -320, z: 0 },
+      rotation: {
+        x: Math.PI / 12,
+        y: Math.PI / 4,
+        z: 0,
+      },
+    },
+    mobile: {
+      scale: { x: 0.12, y: 0.12, z: 0.12 },
+      position: { x: 0, y: -320, z: 0 },
+      rotation: {
+        x: Math.PI / 6,
+        y: Math.PI / 6,
         z: 0,
       },
     },

@@ -25,7 +25,3 @@ pnpm dev
 ```
 
 Optional env vars (see `.env.example`): `RESEND_API_KEY` for the contact form.
-
----
-
-Built on the open-source [3d-portfolio](https://github.com/Naresh-Khatri/3d-portfolio) template — heavily customized.

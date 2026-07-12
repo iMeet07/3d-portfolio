@@ -68,9 +68,9 @@ const ResearchSection = () => {
           {STATS.map((stat) => (
             <div
               key={stat.label}
-              className="flex flex-col items-center text-center rounded-xl border border-border bg-card/50 py-6 px-2"
+              className="gradient-hairline flex flex-col items-center text-center rounded-xl border border-border bg-card/50 py-6 px-2"
             >
-              <span className="text-3xl md:text-4xl font-bold text-foreground">
+              <span className="text-3xl md:text-4xl font-bold font-display text-gradient">
                 {stat.value}
               </span>
               <span className="text-xs md:text-sm text-muted-foreground mt-1">

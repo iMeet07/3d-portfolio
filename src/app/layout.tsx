@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Archivo_Black } from "next/font/google";
+import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { config } from "@/data/config";
 
@@ -46,9 +46,9 @@ const inter = Inter({
   variable: "--font-sans",
 });
 
-const archivoBlack = Archivo_Black({
+const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
-  weight: "400",
+  weight: ["400", "500", "700"],
   variable: "--font-display",
 });
 
@@ -58,7 +58,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={[inter.variable, archivoBlack.variable, "font-display"].join(" ")} suppressHydrationWarning>
+    <html lang="en" className={[inter.variable, spaceGrotesk.variable, "font-display"].join(" ")} suppressHydrationWarning>
       <head>
         <Script
           defer
