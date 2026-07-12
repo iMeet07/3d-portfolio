@@ -117,6 +117,9 @@ const FeaturedCard = ({
   <ResponsiveDialog>
     <ResponsiveDialogTrigger asChild>
       <motion.div
+        role="button"
+        tabIndex={0}
+        aria-label={`View ${project.title} project`}
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -182,6 +185,9 @@ const MediumCard = ({
   <ResponsiveDialog>
     <ResponsiveDialogTrigger asChild>
       <motion.div
+        role="button"
+        tabIndex={0}
+        aria-label={`View ${project.title} project`}
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: index * 0.08 }}
@@ -235,6 +241,9 @@ const SmallCard = ({
   <ResponsiveDialog>
     <ResponsiveDialogTrigger asChild>
       <motion.div
+        role="button"
+        tabIndex={0}
+        aria-label={`View ${project.title} project`}
         initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, delay: index * 0.06 }}

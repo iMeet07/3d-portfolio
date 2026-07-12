@@ -323,8 +323,8 @@ const HeroSection = () => {
                     </TooltipContent>
                   </Tooltip>
                   <div className="flex items-center h-full gap-2">
-                    <Link href={`mailto:${config.email}`}>
-                      <Button variant={"outline"}>
+                    <Link href={`mailto:${config.email}`} aria-label="Email Meet Brahmbhatt">
+                      <Button variant={"outline"} aria-label="Email">
                         <Mail size={18} />
                       </Button>
                     </Link>
@@ -332,8 +332,9 @@ const HeroSection = () => {
                       href={config.social.github}
                       target="_blank"
                       className="cursor-can-hover"
+                      aria-label="GitHub profile"
                     >
-                      <Button variant={"outline"}>
+                      <Button variant={"outline"} aria-label="GitHub">
                         <SiGithub size={18} />
                       </Button>
                     </Link>
@@ -341,8 +342,9 @@ const HeroSection = () => {
                       href={config.social.linkedin}
                       target="_blank"
                       className="cursor-can-hover"
+                      aria-label="LinkedIn profile"
                     >
-                      <Button variant={"outline"}>
+                      <Button variant={"outline"} aria-label="LinkedIn">
                         <SiLinkedin size={18} />
                       </Button>
                     </Link>

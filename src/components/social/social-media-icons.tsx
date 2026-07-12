@@ -37,8 +37,8 @@ const SocialMediaButtons = () => {
     <div ref={ref} className="z-10">
       {show &&
         BUTTONS.map((button) => (
-          <Link href={button.href} key={button.name} target="_blank">
-            <Button variant={"ghost"}>{button.icon}</Button>
+          <Link href={button.href} key={button.name} target="_blank" aria-label={button.name}>
+            <Button variant={"ghost"} aria-label={button.name}>{button.icon}</Button>
           </Link>
         ))}
     </div>
