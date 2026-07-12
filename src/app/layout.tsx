@@ -87,6 +87,8 @@ export default function RootLayout({
   return (
     <html lang="en" className={[inter.variable, spaceGrotesk.variable, "font-display"].join(" ")} suppressHydrationWarning>
       <head>
+        <link rel="preconnect" href="https://api.github.com" />
+        <link rel="dns-prefetch" href="https://ghchart.rshah.org" />
         <Script
           id="json-ld-person"
           type="application/ld+json"

@@ -1,7 +1,15 @@
 import React from "react";
+import dynamic from "next/dynamic";
 import SmoothScroll from "@/components/smooth-scroll";
 import { cn } from "@/lib/utils";
-import SkillSphere from "@/components/skill-sphere";
+const SkillSphere = dynamic(() => import("@/components/skill-sphere"), {
+  ssr: false,
+  loading: () => (
+    <div className="fixed inset-0 z-0 pointer-events-none">
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[var(--brand-from)]/3 to-transparent opacity-40" />
+    </div>
+  ),
+});
 import SkillsSection from "@/components/sections/skills";
 import ExperienceSection from "@/components/sections/experience";
 import ProjectsSection from "@/components/sections/projects";

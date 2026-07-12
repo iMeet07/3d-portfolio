@@ -66,7 +66,7 @@ const Header = ({ loader }: HeaderProps) => {
             className="mr-4"
           />
         )}
-        <Link
+        <a
           href="/assets/Meet-Brahmbhatt-Resume.pdf"
           target="_blank"
           rel="noopener"
@@ -76,7 +76,7 @@ const Header = ({ loader }: HeaderProps) => {
             <Download className="w-3.5 h-3.5" />
             Resume
           </Button>
-        </Link>
+        </a>
         <Button
           variant={"ghost"}
           onClick={() => setIsActive(!isActive)}

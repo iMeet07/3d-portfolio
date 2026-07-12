@@ -1,9 +1,8 @@
 "use client";
-
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { motion } from "motion/react";
-import { Mail, Clock, Zap, Coffee, BrainCircuit, Server, FlaskConical } from "lucide-react";
+import { Mail, Clock, Zap, Coffee, BrainCircuit, Server, FlaskConical, Copy, Check } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import ContactForm from "../ContactForm";
 import { config } from "@/data/config";
@@ -34,7 +33,17 @@ const CONTACT_METHODS = [
   },
 ];
 
-const ContactRight = () => (
+const ContactRight = () => {
+  const [copied, setCopied] = useState(false);
+
+  const copyEmail = (e: React.MouseEvent) => {
+    e.preventDefault();
+    navigator.clipboard.writeText(config.email);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  return (
   <motion.div
     initial={{ opacity: 0, x: 20 }}
     whileInView={{ opacity: 1, x: 0 }}
@@ -82,7 +91,17 @@ const ContactRight = () => (
                 {method.value}
               </span>
             </div>
-            <span className="text-muted-foreground/40 text-xs">↗</span>
+            {method.highlight ? (
+              <button
+                onClick={copyEmail}
+                className="ml-1 text-muted-foreground/40 hover:text-primary transition-colors"
+                aria-label="Copy email address"
+              >
+                {copied ? <Check className="w-3.5 h-3.5 text-green-400" /> : <Copy className="w-3.5 h-3.5" />}
+              </button>
+            ) : (
+              <span className="text-muted-foreground/40 text-xs">↗</span>
+            )}
           </div>
         </Link>
       ))}
@@ -155,7 +174,8 @@ const ContactRight = () => (
       data and high-stakes decisions. That's where I want to build."
     </blockquote>
   </motion.div>
-);
+  );
+};
 
 const ContactSection = () => {
   return (

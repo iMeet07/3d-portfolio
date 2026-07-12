@@ -123,6 +123,7 @@ const HeroRight = () => (
             src="/assets/meet-pic.jpeg"
             alt="Meet Brahmbhatt"
             fill
+            sizes="(max-width: 1024px) 224px, (max-width: 1280px) 288px, 320px"
             className="object-cover"
             priority
           />
@@ -294,9 +295,10 @@ const HeroSection = () => {
               </div>
 
               <div className="mt-8 flex flex-col gap-3 w-fit">
-                <Link
+                <a
                   href={"/assets/Meet-Brahmbhatt-Resume.pdf"}
                   target="_blank"
+                  rel="noopener"
                   className="flex-1"
                 >
                   <BoxReveal delay={2} width="100%">
@@ -305,7 +307,7 @@ const HeroSection = () => {
                       <p>Resume</p>
                     </Button>
                   </BoxReveal>
-                </Link>
+                </a>
                 <div className="md:self-start flex gap-3">
                   <Tooltip delayDuration={300}>
                     <TooltipTrigger asChild>
