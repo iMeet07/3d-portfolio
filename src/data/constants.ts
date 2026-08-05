@@ -454,8 +454,8 @@ export const EXPERIENCE: Experience[] = [
     id: 2,
     startDate: "May 2026",
     endDate: "Aug 2026",
-    title: "Data Science Associate",
-    company: "Donna AI · Investment Banking AI/DS",
+    title: "Data Science Intern",
+    company: "Donna AI · Capital Markets AI",
     description: [
       "Collecting, cleaning, and analyzing structured & unstructured datasets (companies, markets, transactions) to support M&A and deal-sourcing workflows.",
       "Developing statistical models and ML algorithms for predictive analytics — identifying strategic/financial buyers and valuation modeling.",
