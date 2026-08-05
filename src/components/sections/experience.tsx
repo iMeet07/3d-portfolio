@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 import SectionWrapper from "../ui/section-wrapper";
 import { motion } from "motion/react";
 
-const CURRENT_IDS = [1, 2, 3]; // Koraishy GRA + KCC Capital Partners + DB Lab
+const CURRENT_IDS = [1, 2, 3]; // Koraishy GRA + Donna AI + DB Lab
 
 const ExperienceCard = ({
   experience,
