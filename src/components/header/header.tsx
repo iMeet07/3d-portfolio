@@ -1,7 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "motion/react";
 import { cn } from "@/lib/utils";
 import { config } from "@/data/config";
@@ -27,7 +26,6 @@ const NAV_LINKS = [
 const Header = ({ loader }: HeaderProps) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const pathname = usePathname();
   const lenis = useLenis();
 
   useEffect(() => {
@@ -37,11 +35,20 @@ const Header = ({ loader }: HeaderProps) => {
   }, []);
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    if (href.startsWith("/#") && pathname === "/") {
-      e.preventDefault();
-      lenis?.scrollTo(href.slice(1), { offset: -60 });
-      setMobileOpen(false);
+    if (!href.startsWith("/#")) return;
+
+    const id = href.slice(2); // "/#experience" → "experience"
+    const el = document.getElementById(id);
+    if (!el) return;
+
+    e.preventDefault();
+    if (lenis) {
+      lenis.scrollTo(el, { offset: -70, duration: 1.5 });
+    } else {
+      const top = el.getBoundingClientRect().top + window.scrollY - 70;
+      window.scrollTo({ top, behavior: "smooth" });
     }
+    setMobileOpen(false);
   };
 
   return (
