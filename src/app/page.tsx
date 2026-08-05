@@ -1,5 +1,4 @@
 import React from "react";
-import SmoothScroll from "@/components/smooth-scroll";
 import { cn } from "@/lib/utils";
 import SkillSphereClient from "@/components/skill-sphere-client";
 import SkillsSection from "@/components/sections/skills";
@@ -37,24 +36,22 @@ function MainPage() {
 
   return (
     <RoleFilterProvider>
-      <SmoothScroll>
-        <SkillSphereClient />
-        <main className={cn("bg-slate-100 dark:bg-transparent canvas-overlay-mode")}>
-          <HeroSection />
-          <RoleFilterBanner />
-          <StatsSection />
-          <AboutSection />
-          <SkillsSection />
-          <ToolkitSection />
-          <ExperienceSection />
-          <ResearchSection />
-          <ProjectsSection />
-          <StartupsSection />
-          <BlogPreviewSection posts={posts} />
-          <SocialProofSection />
-          <ContactSection />
-        </main>
-      </SmoothScroll>
+      <SkillSphereClient />
+      <main className={cn("bg-slate-100 dark:bg-transparent canvas-overlay-mode")}>
+        <HeroSection />
+        <RoleFilterBanner />
+        <StatsSection />
+        <AboutSection />
+        <SkillsSection />
+        <ToolkitSection />
+        <ExperienceSection />
+        <ResearchSection />
+        <ProjectsSection />
+        <StartupsSection />
+        <BlogPreviewSection posts={posts} />
+        <SocialProofSection />
+        <ContactSection />
+      </main>
     </RoleFilterProvider>
   );
 }
