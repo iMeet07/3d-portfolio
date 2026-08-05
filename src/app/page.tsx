@@ -13,6 +13,7 @@ import ToolkitSection from "@/components/sections/toolkit";
 import StatsSection from "@/components/sections/stats";
 import { RoleFilterProvider } from "@/contexts/role-filter";
 import { RoleFilterBanner } from "@/components/role-filter-banner";
+import StartupsSection from "@/components/sections/startups";
 import BlogPreviewSection from "@/components/sections/blog-preview";
 import SocialProofSection from "@/components/sections/social-proof";
 import { getBlogPosts } from "@/lib/mdx";
@@ -48,6 +49,7 @@ function MainPage() {
           <ExperienceSection />
           <ResearchSection />
           <ProjectsSection />
+          <StartupsSection />
           <BlogPreviewSection posts={posts} />
           <SocialProofSection />
           <ContactSection />

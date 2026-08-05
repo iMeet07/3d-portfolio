@@ -1,32 +1,66 @@
 .footer {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
+  justify-content: space-between;
   flex-wrap: wrap;
-  font-size: 12px;
-  text-transform: uppercase;
-  margin-top: 40px;
+  gap: 12px;
+  margin-top: 32px;
+  padding-top: 20px;
+  border-top: 1px solid hsl(var(--border) / 0.4);
 
-  ul {
-    width: 50%;
-    margin-top: 10px;
-    overflow: hidden;
-    list-style-type: none;
-    padding: 0;
+  .socials {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
   }
 
-  li {
-    span {
-      color: hsl(var(--muted-foreground));
+  .socialLink {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: hsl(var(--muted-foreground));
+    text-decoration: none;
+    padding: 6px 12px;
+    border: 1px solid hsl(var(--border) / 0.6);
+    border-radius: 999px;
+    transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+
+    &:hover {
+      color: hsl(var(--foreground));
+      border-color: hsl(var(--foreground) / 0.4);
+      background-color: hsl(var(--foreground) / 0.05);
     }
+  }
+
+  .arrow {
+    opacity: 0.5;
+  }
+
+  .tagline {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: hsl(var(--muted-foreground));
+    margin: 0;
   }
 }
 
 @media only screen and (min-width: 1000px) {
   .footer {
-    justify-content: space-between;
+    margin-top: 40px;
+    padding-top: 24px;
 
-    ul {
-      width: auto;
+    .socialLink {
+      font-size: 12px;
+    }
+
+    .tagline {
+      font-size: 12px;
     }
   }
 }

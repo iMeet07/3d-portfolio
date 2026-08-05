@@ -1,15 +1,15 @@
 .header {
   z-index: 9;
-  // background-color: hsl(var(--background) / .8);
   position: fixed;
   width: 100%;
   box-sizing: border-box;
-  padding: 15px;
-  backdrop-filter: blur(12px);
+  padding: 15px 20px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid hsl(var(--border) / 0.4);
 
   .background {
-    background-color: hsl(240 10% 3.9%); // constant color instead of using a css variable
-    opacity: 0.5;
+    background-color: hsl(var(--background) / 0.9);
     height: 100%;
     width: 100%;
     position: absolute;

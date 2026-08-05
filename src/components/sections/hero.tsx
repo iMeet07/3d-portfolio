@@ -130,9 +130,9 @@ const HeroRight = () => (
         </div>
       </div>
 
-      {/* Floating IBM card — top right */}
+      {/* Floating IBM card — outside top-right on lg+, corner badge on md */}
       <FloatingCard
-        className="-top-7 -right-8 lg:-right-14"
+        className="-top-7 right-3 lg:-right-16"
         delay={1.6}
         animClass="animate-float"
       >
@@ -142,9 +142,9 @@ const HeroRight = () => (
         </div>
       </FloatingCard>
 
-      {/* Floating research card — bottom left */}
+      {/* Floating research card — outside bottom-left on lg+, corner badge on md */}
       <FloatingCard
-        className="-bottom-8 -left-10 lg:-left-16"
+        className="-bottom-8 left-3 lg:-left-20"
         delay={2.0}
         animClass="animate-float-slow"
       >
@@ -154,9 +154,9 @@ const HeroRight = () => (
         </div>
       </FloatingCard>
 
-      {/* Open to work badge — right center */}
+      {/* Open to work badge — hidden on md, outside right on lg+ */}
       <FloatingCard
-        className="top-1/2 -translate-y-1/2 -right-10 lg:-right-20"
+        className="hidden lg:block top-1/2 -translate-y-1/2 -right-24"
         delay={1.8}
         animClass="animate-float"
       >
@@ -171,9 +171,9 @@ const HeroRight = () => (
         </div>
       </FloatingCard>
 
-      {/* Location card — bottom right */}
+      {/* Location card — hidden on md, outside bottom-right on lg+ */}
       <FloatingCard
-        className="-bottom-5 -right-6 lg:-right-10"
+        className="hidden lg:block -bottom-5 -right-16"
         delay={2.2}
         animClass="animate-float-slow"
       >

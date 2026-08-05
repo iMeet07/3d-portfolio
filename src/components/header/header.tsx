@@ -1,117 +1,174 @@
 "use client";
-import { useState } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import styles from "./style.module.scss";
-import { opacity, background } from "./anim";
-import Nav from "./nav";
+import { motion, AnimatePresence } from "motion/react";
 import { cn } from "@/lib/utils";
-import FunnyThemeToggle from "../theme/funny-theme-toggle";
-import { Button } from "../ui/button";
 import { config } from "@/data/config";
-import OnlineUsers from "../realtime/online-users";
-import { GitHubStarsButton } from "../ui/shadcn-io/github-stars-button";
-import { Download } from "lucide-react";
+import { Button } from "../ui/button";
+import FunnyThemeToggle from "../theme/funny-theme-toggle";
+import { Download, Menu, X } from "lucide-react";
 
 interface HeaderProps {
   loader?: boolean;
 }
 
+const NAV_LINKS = [
+  { title: "About", href: "/#about" },
+  { title: "Skills", href: "/#skills" },
+  { title: "Experience", href: "/#experience" },
+  { title: "Research", href: "/#research" },
+  { title: "Projects", href: "/#projects" },
+  { title: "Blogs", href: "/blogs" },
+  { title: "Contact", href: "/#contact" },
+];
+
 const Header = ({ loader }: HeaderProps) => {
-  const [isActive, setIsActive] = useState<boolean>(false);
-  const isHome = usePathname() === "/";
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handler = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", handler, { passive: true });
+    return () => window.removeEventListener("scroll", handler);
+  }, []);
+
   return (
     <motion.header
+      initial={{ y: -80 }}
+      animate={{ y: 0 }}
+      transition={{ delay: loader ? 3.5 : 0, duration: 0.6, ease: [0.76, 0, 0.24, 1] }}
       className={cn(
-        styles.header,
-        "transition-colors delay-100 duration-500 ease-in z-[1000]"
+        "fixed top-0 left-0 right-0 z-[1000]",
+        "transition-all duration-300 ease-in-out",
+        "backdrop-blur-xl",
+        scrolled || mobileOpen
+          ? "bg-background/80 border-b border-border/50 shadow-[0_1px_20px_hsl(var(--foreground)/0.04)]"
+          : "bg-transparent border-b border-border/20"
       )}
-      style={{
-        background: isActive ? "hsl(var(--background) / .8)" : "transparent",
-        // backgroundImage:
-        //   "linear-gradient(0deg, rgba(0, 0, 0, 0), rgb(0, 0, 0))",
-      }}
-      initial={{
-        y: -80,
-      }}
-      animate={{
-        y: 0,
-      }}
-      transition={{
-        delay: loader ? 3.5 : 0, // 3.5 for loading, .5 can be added for delay
-        duration: 0.8,
-      }}
     >
-      {/* <div
-        className="absolute inset-0 "
-        style={{
-          mask: "linear-gradient(rgb(0, 0, 0) 0%, rgba(0, 0, 0, 0) 12.5%)",
-        }}
-      >
-      </div> */}
-      <div className={cn(styles.bar, "flex items-center justify-between")}>
-        <Link href="/" className="flex items-center justify-center">
-          <Button variant={"link"} className="text-md">
-            {config.author}
-          </Button>
+      <div className="flex items-center justify-between px-5 md:px-8 lg:px-12 h-14">
+        {/* Logo */}
+        <Link
+          href="/"
+          className="font-semibold text-sm tracking-wide hover:opacity-70 transition-opacity shrink-0"
+        >
+          {config.author}
         </Link>
 
-        <FunnyThemeToggle className="w-6 h-6 mr-4 hidden md:flex" />
-        {isHome && process.env.NEXT_PUBLIC_WS_URL && <OnlineUsers />}
-        {config.githubUsername && config.githubRepo && (
-          <GitHubStarsButton
-            username={config.githubUsername}
-            repo={config.githubRepo}
-            className="mr-4"
-          />
-        )}
-        <a
-          href="/assets/Meet-Brahmbhatt-Resume.pdf"
-          target="_blank"
-          rel="noopener"
-          className="hidden md:flex mr-3"
-        >
-          <Button variant="outline" size="sm" className="gap-1.5 font-mono text-xs h-8 px-3">
-            <Download className="w-3.5 h-3.5" />
-            Resume
-          </Button>
-        </a>
-        <Button
-          variant={"ghost"}
-          onClick={() => setIsActive(!isActive)}
-          aria-label={isActive ? "Close menu" : "Open menu"}
-          aria-expanded={isActive}
-          className={cn(
-            styles.el,
-            "m-0 p-0 h-6 bg-transparent flex items-center justify-center"
-          )}
-        >
-          <div className="relative hidden md:flex items-center">
-            <motion.p
-              variants={opacity}
-              animate={!isActive ? "open" : "closed"}
+        {/* Desktop nav */}
+        <nav className="hidden md:flex items-center gap-0.5">
+          {NAV_LINKS.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className="px-3 py-1.5 rounded-md text-xs font-mono uppercase tracking-wide text-muted-foreground hover:text-foreground hover:bg-foreground/5 transition-colors"
             >
-              Menu
-            </motion.p>
-            <motion.p variants={opacity} animate={isActive ? "open" : "closed"}>
-              Close
-            </motion.p>
-          </div>
-          <div
-            className={`${styles.burger} ${isActive ? styles.burgerActive : ""
-              }`}
-          ></div>
-        </Button>
+              {link.title}
+            </Link>
+          ))}
+        </nav>
+
+        {/* Right controls */}
+        <div className="flex items-center gap-2 shrink-0">
+          <FunnyThemeToggle className="w-5 h-5" />
+          <a
+            href="/assets/Meet-Brahmbhatt-Resume.pdf"
+            target="_blank"
+            rel="noopener"
+            className="hidden md:flex"
+          >
+            <Button
+              variant="outline"
+              size="sm"
+              className="gap-1.5 font-mono text-xs h-8 px-3"
+            >
+              <Download className="w-3 h-3" />
+              Resume
+            </Button>
+          </a>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="md:hidden h-8 w-8"
+            onClick={() => setMobileOpen(!mobileOpen)}
+            aria-label={mobileOpen ? "Close menu" : "Open menu"}
+            aria-expanded={mobileOpen}
+          >
+            <AnimatePresence mode="wait" initial={false}>
+              {mobileOpen ? (
+                <motion.span
+                  key="close"
+                  initial={{ rotate: -45, opacity: 0 }}
+                  animate={{ rotate: 0, opacity: 1 }}
+                  exit={{ rotate: 45, opacity: 0 }}
+                  transition={{ duration: 0.15 }}
+                >
+                  <X className="w-4 h-4" />
+                </motion.span>
+              ) : (
+                <motion.span
+                  key="menu"
+                  initial={{ rotate: 45, opacity: 0 }}
+                  animate={{ rotate: 0, opacity: 1 }}
+                  exit={{ rotate: -45, opacity: 0 }}
+                  transition={{ duration: 0.15 }}
+                >
+                  <Menu className="w-4 h-4" />
+                </motion.span>
+              )}
+            </AnimatePresence>
+          </Button>
+        </div>
       </div>
-      <motion.div
-        variants={background}
-        initial="initial"
-        animate={isActive ? "open" : "closed"}
-        className={styles.background}
-      ></motion.div>
-      <AnimatePresence mode="wait">
-        {isActive && <Nav setIsActive={setIsActive} />}
+
+      {/* Mobile dropdown */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            key="mobile-menu"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.22, ease: "easeInOut" }}
+            className="md:hidden overflow-hidden border-t border-border/40 bg-background/95 backdrop-blur-xl"
+          >
+            <nav className="flex flex-col px-4 py-3 gap-0.5">
+              {NAV_LINKS.map((link, i) => (
+                <motion.div
+                  key={link.href}
+                  initial={{ x: -10, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ delay: i * 0.03, duration: 0.15 }}
+                >
+                  <Link
+                    href={link.href}
+                    onClick={() => setMobileOpen(false)}
+                    className="block px-3 py-2.5 rounded-md text-sm font-mono uppercase tracking-wide text-muted-foreground hover:text-foreground hover:bg-foreground/5 transition-colors"
+                  >
+                    {link.title}
+                  </Link>
+                </motion.div>
+              ))}
+              <div className="pt-2 pb-1 px-2">
+                <a
+                  href="/assets/Meet-Brahmbhatt-Resume.pdf"
+                  target="_blank"
+                  rel="noopener"
+                  onClick={() => setMobileOpen(false)}
+                >
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="w-full gap-1.5 font-mono text-xs"
+                  >
+                    <Download className="w-3 h-3" />
+                    Resume
+                  </Button>
+                </a>
+              </div>
+            </nav>
+          </motion.div>
+        )}
       </AnimatePresence>
     </motion.header>
   );
