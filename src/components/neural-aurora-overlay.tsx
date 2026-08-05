@@ -54,7 +54,7 @@ export default function NeuralAuroraOverlay({ className }: { className?: string 
     const dpr = window.devicePixelRatio || 1;
 
     const initEntities = (w: number, h: number) => {
-      nodes = Array.from({ length: 55 }, () => ({
+      nodes = Array.from({ length: 38 }, () => ({
         x: Math.random() * w,
         y: Math.random() * h,
         vx: (Math.random() - 0.5) * 0.35,
@@ -66,7 +66,7 @@ export default function NeuralAuroraOverlay({ className }: { className?: string 
         phaseSpeed: Math.random() * 0.022 + 0.008,
       }));
 
-      blobs = Array.from({ length: 6 }, () => ({
+      blobs = Array.from({ length: 4 }, () => ({
         x: Math.random() * w,
         y: Math.random() * h,
         vx: (Math.random() - 0.5) * 0.12,
@@ -183,14 +183,24 @@ export default function NeuralAuroraOverlay({ className }: { className?: string 
       mouse = { x: e.clientX, y: e.clientY };
     };
 
+    const onVisibilityChange = () => {
+      if (document.hidden) {
+        cancelAnimationFrame(raf);
+      } else {
+        raf = requestAnimationFrame(draw);
+      }
+    };
+
     window.addEventListener("resize", resize);
-    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("mousemove", onMouseMove, { passive: true });
+    document.addEventListener("visibilitychange", onVisibilityChange);
     resize();
     draw();
 
     return () => {
       window.removeEventListener("resize", resize);
       window.removeEventListener("mousemove", onMouseMove);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
       cancelAnimationFrame(raf);
     };
   }, []);

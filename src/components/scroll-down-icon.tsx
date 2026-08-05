@@ -6,15 +6,10 @@ const ScrollDownIcon = () => {
   const [show, setShow] = useState(true);
   useEffect(() => {
     if (typeof window === "undefined") return;
-
-    window.addEventListener("scroll", () => {
-      if (window.scrollY > 10) {
-        setShow(false);
-      } else {
-        setShow(true);
-      }
-    });
-  });
+    const handler = () => setShow(window.scrollY <= 10);
+    window.addEventListener("scroll", handler, { passive: true });
+    return () => window.removeEventListener("scroll", handler);
+  }, []);
   return (
     <AnimatePresence>
       {show && (

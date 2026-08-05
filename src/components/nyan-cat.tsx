@@ -34,7 +34,7 @@ const NyanCat = () => {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  });
+  }, []);
 
   return (
     <div className="fixed left-0 top-0 w-screen h-screen overflow-hidden z-[-1]">

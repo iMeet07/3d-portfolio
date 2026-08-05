@@ -137,7 +137,7 @@ export default function SkillSphere() {
 
     // ── RENDERER ──────────────────────────────────────────────────────────────
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.4;
@@ -505,12 +505,23 @@ export default function SkillSphere() {
     };
     window.addEventListener("resize", onResize);
 
+    // ── PAGE VISIBILITY (pause renderer when tab is hidden) ───────────────────
+    const onVisibilityChange = () => {
+      if (document.hidden) {
+        cancelAnimationFrame(raf);
+      } else {
+        animate();
+      }
+    };
+    document.addEventListener("visibilitychange", onVisibilityChange);
+
     // ── CLEANUP ───────────────────────────────────────────────────────────────
     return () => {
       cancelAnimationFrame(raf);
       if (touchDismissTimer) clearTimeout(touchDismissTimer);
       window.removeEventListener("mousemove", onMouseMove);
       window.removeEventListener("resize", onResize);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
       renderer.domElement.removeEventListener("touchend", onTouchEnd);
       ScrollTrigger.getAll().forEach(st => st.kill());
       renderer.dispose();

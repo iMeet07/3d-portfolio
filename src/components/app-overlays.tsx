@@ -15,7 +15,7 @@ export default function AppOverlays() {
     <>
       <Particles
         className="fixed inset-0 -z-10 animate-fade-in"
-        quantity={100}
+        quantity={50}
       />
       <NeuralAuroraOverlay className="z-[1] animate-fade-in" />
       {isHome && <RemoteCursors />}

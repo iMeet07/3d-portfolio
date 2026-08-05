@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, useCallback } from "react";
 import { useMousePosition } from "@/utils/mouse";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
@@ -43,10 +43,11 @@ export default function Particles({
   const mousePosition = useMousePosition();
   const mouse = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
   const canvasSize = useRef<{ w: number; h: number }>({ w: 0, h: 0 });
-  const dpr = typeof window !== "undefined" ? window.devicePixelRatio : 1;
+  const rafRef = useRef<number>(0);
+  const dpr = typeof window !== "undefined" ? Math.min(window.devicePixelRatio, 1.5) : 1;
 
   useEffect(() => {
-    if (isBlogPost) return
+    if (isBlogPost) return;
     if (canvasRef.current) {
       context.current = canvasRef.current.getContext("2d");
     }
@@ -54,8 +55,19 @@ export default function Particles({
     animate();
     window.addEventListener("resize", initCanvas);
 
+    const onVisibility = () => {
+      if (document.hidden) {
+        cancelAnimationFrame(rafRef.current);
+      } else {
+        animate();
+      }
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+
     return () => {
+      cancelAnimationFrame(rafRef.current);
       window.removeEventListener("resize", initCanvas);
+      document.removeEventListener("visibilitychange", onVisibility);
     };
   }, [isBlogPost]);
 
@@ -229,7 +241,7 @@ export default function Particles({
         );
       }
     });
-    window.requestAnimationFrame(animate);
+    rafRef.current = window.requestAnimationFrame(animate);
   };
 
   if (isBlogPost) return null;
