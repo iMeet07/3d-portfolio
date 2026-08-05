@@ -111,7 +111,7 @@ const ExperienceCard = ({
 
 const ExperienceSection = () => {
   return (
-    <SectionWrapper className="flex flex-col items-center justify-center min-h-[120vh] py-20 z-10">
+    <SectionWrapper id="experience" className="flex flex-col items-center justify-center min-h-[120vh] py-20 z-10">
       <div className="w-full max-w-3xl px-4 md:px-8 mx-auto">
         <SectionHeader
           id="experience"
