@@ -29,7 +29,7 @@ const STUDIES = [
       "Distilled 2.3M trauma-registry patients into a 35,387-patient cohort across 323 variables.",
       "Propensity-score-matched analysis: angioembolization linked to ~40% lower mortality vs observation (OR 0.61, p<0.001).",
       "GAM primary model with AUC 0.876; 2016→2024 trend analysis of treatment adoption and outcomes.",
-      "Caught a silent data-contamination bug during pipeline build: AIS spleen filter was matching prefix '44xx' (thorax) instead of '5442xx' (abdomen → solid organ → spleen). The code ran fine, the counts looked plausible, but the cohort was wrong. Fixed by verifying the full AIS coding schema; confirmed 35,387 matches the original R study.",
+      "Built end-to-end reproducible pipeline from raw ACS TQIP data — 323-variable feature engineering, AIS coding validation, PSM sensitivity analysis, and 8-year treatment-adoption trend modelling.",
     ],
     tags: ["Python", "PSM", "GAM", "SQLite"],
     showChart: true,

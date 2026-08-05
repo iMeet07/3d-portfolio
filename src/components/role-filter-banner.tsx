@@ -17,7 +17,7 @@ const WHY_HIRE_ME: Record<Track, string | null> = {
   backend:
     "SAGA, Outbox, Kafka fan-out, Redis idempotency — I design distributed systems for the failure cases, not just the happy path.",
   research:
-    "35,387-patient cohort, 21-covariate PSM, AUC 0.876 — and I caught the silent data-contamination bug before any analysis ran.",
+    "9+ co-authored abstracts, 300K+ patients across trauma registries and EHR cohorts — clinical AI pipelines that go from raw population data to causal inference and surgical decision support.",
 };
 
 export const RoleFilterBanner = () => {
