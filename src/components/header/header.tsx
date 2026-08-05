@@ -42,10 +42,11 @@ const Header = ({ loader }: HeaderProps) => {
     if (!el) return;
 
     e.preventDefault();
+    // Use numeric target — most reliable in Lenis v1
+    const top = el.getBoundingClientRect().top + window.scrollY - 70;
     if (lenis) {
-      lenis.scrollTo(el, { offset: -70, duration: 1.5 });
+      lenis.scrollTo(top, { duration: 1.5 });
     } else {
-      const top = el.getBoundingClientRect().top + window.scrollY - 70;
       window.scrollTo({ top, behavior: "smooth" });
     }
     setMobileOpen(false);
