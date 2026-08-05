@@ -110,80 +110,72 @@ const HeroRight = () => (
     initial={{ opacity: 0 }}
     animate={{ opacity: 1 }}
     transition={{ duration: 0.7, delay: 1.2 }}
-    className="relative hidden md:flex items-center justify-center h-full"
+    className="relative hidden md:flex flex-col items-center justify-center gap-6 h-full"
   >
     {/* Aurora blob background */}
     <div className="absolute w-80 h-80 lg:w-96 lg:h-96 bg-gradient-to-tr from-violet-600/25 via-fuchsia-600/15 to-cyan-500/10 rounded-full blur-3xl -z-[1]" />
 
-    {/* Profile photo with gradient border */}
-    <div className="relative w-56 h-56 lg:w-72 lg:h-72 xl:w-80 xl:h-80">
+    {/* Profile photo — clean, no badges on top */}
+    <div className="relative w-56 h-56 lg:w-64 lg:h-64 xl:w-72 xl:h-72 shrink-0">
       <div className="absolute inset-0 rounded-3xl p-[2px] bg-gradient-to-tr from-[var(--brand-from)] via-[var(--brand-via)] to-[var(--brand-to)]">
         <div className="w-full h-full rounded-[calc(1.5rem-2px)] overflow-hidden bg-card">
           <Image
             src="/assets/meet-pic.jpeg"
             alt="Meet Brahmbhatt"
             fill
-            sizes="(max-width: 1024px) 224px, (max-width: 1280px) 288px, 320px"
+            sizes="(max-width: 1024px) 224px, (max-width: 1280px) 256px, 288px"
             className="object-cover"
             priority
           />
         </div>
       </div>
+    </div>
 
-      {/* Floating IBM card — outside top-right on lg+, corner badge on md */}
-      <FloatingCard
-        className="-top-7 right-3 lg:-right-16"
-        delay={1.6}
-        animClass="animate-float"
-      >
-        <div className="font-display text-lg font-bold text-gradient">IBM</div>
-        <div className="font-mono text-[10px] text-muted-foreground leading-none">
-          AI Engineer Intern
-        </div>
-      </FloatingCard>
-
-      {/* Floating research card — outside bottom-left on lg+, corner badge on md */}
-      <FloatingCard
-        className="-bottom-8 left-3 lg:-left-20"
-        delay={2.0}
-        animClass="animate-float-slow"
-      >
-        <div className="font-display text-lg font-bold text-gradient">9+</div>
-        <div className="font-mono text-[10px] text-muted-foreground leading-none">
-          Research Abstracts
-        </div>
-      </FloatingCard>
-
-      {/* Open to work badge — hidden on md, outside right on lg+ */}
-      <FloatingCard
-        className="hidden lg:block top-1/2 -translate-y-1/2 -right-24"
-        delay={1.8}
-        animClass="animate-float"
-      >
-        <div className="flex items-center gap-1.5 mb-0.5">
-          <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse-glow" />
-          <span className="font-mono text-[10px] text-green-400 font-medium">
-            Open to work
-          </span>
-        </div>
-        <div className="font-mono text-[10px] text-muted-foreground">
-          Summer 2026
-        </div>
-      </FloatingCard>
-
-      {/* Location card — hidden on md, outside bottom-right on lg+ */}
-      <FloatingCard
-        className="hidden lg:block -bottom-5 -right-16"
-        delay={2.2}
-        animClass="animate-float-slow"
-      >
-        <div className="flex items-center gap-1">
-          <MapPin className="w-3 h-3 text-[var(--brand-via)]" />
-          <span className="font-mono text-[10px] text-muted-foreground">
-            Stony Brook, NY
-          </span>
-        </div>
-      </FloatingCard>
+    {/* Stat badges row — below photo, never over the face */}
+    <div className="flex items-center gap-2 flex-wrap justify-center">
+      {[
+        { delay: 1.6, anim: "animate-float", content: (
+          <>
+            <div className="font-display text-base font-bold text-gradient">IBM</div>
+            <div className="font-mono text-[10px] text-muted-foreground leading-none">AI Engineer Intern</div>
+          </>
+        )},
+        { delay: 2.0, anim: "animate-float-slow", content: (
+          <>
+            <div className="font-display text-base font-bold text-gradient">9+</div>
+            <div className="font-mono text-[10px] text-muted-foreground leading-none">Research Abstracts</div>
+          </>
+        )},
+        { delay: 1.8, anim: "animate-float", content: (
+          <>
+            <div className="flex items-center gap-1.5 mb-0.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse-glow" />
+              <span className="font-mono text-[10px] text-green-400 font-medium">Open to work</span>
+            </div>
+            <div className="font-mono text-[10px] text-muted-foreground">Summer 2026</div>
+          </>
+        )},
+        { delay: 2.2, anim: "animate-float-slow", content: (
+          <div className="flex items-center gap-1">
+            <MapPin className="w-3 h-3 text-[var(--brand-via)]" />
+            <span className="font-mono text-[10px] text-muted-foreground">Stony Brook, NY</span>
+          </div>
+        )},
+      ].map(({ delay, anim, content }, i) => (
+        <motion.div
+          key={i}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay }}
+          className={cn(
+            "gradient-hairline rounded-xl border border-border/70 bg-card/80 backdrop-blur-md px-3 py-2 shadow-lg",
+            anim
+          )}
+          style={{ animationDelay: `${delay}s` }}
+        >
+          {content}
+        </motion.div>
+      ))}
     </div>
   </motion.div>
 );

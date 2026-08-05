@@ -1,12 +1,14 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "motion/react";
 import { cn } from "@/lib/utils";
 import { config } from "@/data/config";
 import { Button } from "../ui/button";
 import FunnyThemeToggle from "../theme/funny-theme-toggle";
 import { Download, Menu, X } from "lucide-react";
+import { useLenis } from "@/lib/lenis";
 
 interface HeaderProps {
   loader?: boolean;
@@ -25,12 +27,22 @@ const NAV_LINKS = [
 const Header = ({ loader }: HeaderProps) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname();
+  const lenis = useLenis();
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handler, { passive: true });
     return () => window.removeEventListener("scroll", handler);
   }, []);
+
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (href.startsWith("/#") && pathname === "/") {
+      e.preventDefault();
+      lenis?.scrollTo(href.slice(1), { offset: -60 });
+      setMobileOpen(false);
+    }
+  };
 
   return (
     <motion.header
@@ -61,6 +73,7 @@ const Header = ({ loader }: HeaderProps) => {
             <Link
               key={link.href}
               href={link.href}
+              onClick={(e) => handleNavClick(e, link.href)}
               className="px-3 py-1.5 rounded-md text-xs font-mono uppercase tracking-wide text-muted-foreground hover:text-foreground hover:bg-foreground/5 transition-colors"
             >
               {link.title}
@@ -142,7 +155,7 @@ const Header = ({ loader }: HeaderProps) => {
                 >
                   <Link
                     href={link.href}
-                    onClick={() => setMobileOpen(false)}
+                    onClick={(e) => { handleNavClick(e, link.href); setMobileOpen(false); }}
                     className="block px-3 py-2.5 rounded-md text-sm font-mono uppercase tracking-wide text-muted-foreground hover:text-foreground hover:bg-foreground/5 transition-colors"
                   >
                     {link.title}
