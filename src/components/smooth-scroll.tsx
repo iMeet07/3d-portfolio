@@ -27,7 +27,6 @@ function SmoothScroll({ children, isInsideModal = false }: LenisProps) {
       root
       options={{
         duration: 2,
-        anchors: true,
         prevent: (node) => {
           if (isInsideModal) return true;
           const modalOpen = node.classList.contains("modall");
