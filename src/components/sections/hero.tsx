@@ -301,21 +301,14 @@ const HeroSection = () => {
                   </BoxReveal>
                 </a>
                 <div className="md:self-start flex gap-3">
-                  <Tooltip delayDuration={300}>
-                    <TooltipTrigger asChild>
-                      <Link href={"#contact"}>
-                        <Button
-                          variant={"outline"}
-                          className="block w-full overflow-hidden"
-                        >
-                          Hire Me
-                        </Button>
-                      </Link>
-                    </TooltipTrigger>
-                    <TooltipContent side="bottom">
-                      <p>pls 🥹 🙏</p>
-                    </TooltipContent>
-                  </Tooltip>
+                  <Link href={"#contact"}>
+                    <Button
+                      variant={"outline"}
+                      className="block w-full overflow-hidden"
+                    >
+                      Hire Me
+                    </Button>
+                  </Link>
                   <div className="flex items-center h-full gap-2">
                     <Link href={`mailto:${config.email}`} aria-label="Email Meet Brahmbhatt">
                       <Button variant={"outline"} aria-label="Email">
