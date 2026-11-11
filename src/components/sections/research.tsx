@@ -13,48 +13,106 @@ import {
 import { TQIPChart } from "@/components/tqip-chart";
 
 const STATS = [
-  { value: "9+", label: "co-authored research abstracts" },
+  { value: "10+", label: "accepted research abstracts" },
   { value: "300K+", label: "patient records analyzed" },
-  { value: "3", label: "active studies + papers" },
+  { value: "5+", label: "active studies + papers" },
 ];
 
 const DATASETS = ["N3C", "TriNetX", "ACS TQIP", "ACS NSQIP", "SEER"];
 
 const STUDIES = [
   {
-    title: "Blunt Spleen Injury — Comparative Effectiveness",
-    lab: "Stony Brook DB Lab · Prof. Fusheng Wang",
-    status: "Manuscript in progress",
+    title: "Blunt Spleen Injury — AIS-Grade-Stratified Analysis",
+    lab: "Stony Brook BMI Lab · Prof. Fusheng Wang & Dr. Randeep Jawa",
+    status: "ASC 2027 Accepted",
+    statusColor: "default" as const,
     points: [
-      "Distilled 2.3M trauma-registry patients into a 35,387-patient cohort across 323 variables.",
-      "Propensity-score-matched analysis: angioembolization linked to ~40% lower mortality vs observation (OR 0.61, p<0.001).",
-      "GAM primary model with AUC 0.876; 2016→2024 trend analysis of treatment adoption and outcomes.",
-      "Built end-to-end reproducible pipeline from raw ACS TQIP data — 323-variable feature engineering, AIS coding validation, PSM sensitivity analysis, and 8-year treatment-adoption trend modelling.",
+      "16,226-patient ADULTTQIP cohort (AIS 3–5) built from 2.3M registry records across 323 variables.",
+      "Four-method AIS-stratified causal battery (GAM, PSM, IPTW, AIPW): SAE reduces mortality at AIS-4 (OR 0.29) and AIS-5 (OR 0.17); surgery harmful at AIS-3 by GAM, protective at AIS-5 across all methods.",
+      "Nine-year trend cohort (n=99,868): SAE adoption doubled (16.9%→33.7%), mortality declined (7.7%→6.6%).",
+      "AMIA 2027 poster submitted; JAMA Surgery manuscript in preparation.",
     ],
-    tags: ["Python", "PSM", "GAM", "SQLite"],
-    showChart: true,
+    tags: ["Python", "R", "GAM", "PSM", "IPTW", "AIPW", "SQLite"],
   },
   {
-    title: "SGLT2i vs DPP-4i — Cognitive Impairment Risk in T2D",
-    lab: "Stony Brook University · Dr. Farrukh M. Koraishy",
+    title: "SGLT2i vs DPP-4i & GLP-1RA — Cognitive Outcomes in T2D",
+    lab: "Stony Brook Medicine · Dr. Farrukh M. Koraishy",
     status: "Ongoing",
+    statusColor: "secondary" as const,
     points: [
-      "National TriNetX cohort of 43,065 older adults with Type 2 Diabetes (from 8.9M screened).",
-      "Matched vs unmatched cohort comparisons across index year, cardiorenal disease, and medication-burden phenotypes.",
-      "Evaluating generalizability and the role of PSM as sensitivity vs primary analysis.",
+      "Three national TTE studies on TriNetX EHR (DPP-4i N=43,005; GLP-1RA N=52,918; CKM N=67,938).",
+      "GLP-1RA analysis complete: OW Cox HR=0.98, Fine-Gray sHR=0.98, reviewed and accepted by PI.",
+      "DPP-4i: 1:1 PSM (13,311 matched pairs) + matched vs unmatched generalizability analysis.",
+      "54% SGLT2i exclusion by PSM driven by late-era cardiovascular complexity (HF 45% vs 22%) — empirical basis for overlap weighting as primary estimator.",
     ],
-    tags: ["R", "EHR", "Propensity Matching", "Epidemiology"],
+    tags: ["R", "TriNetX", "PSM", "Overlap Weighting", "Cox", "Fine-Gray"],
   },
   {
     title: "The Generation Bottleneck: Limits of Reranking & Majority Voting in LLM Reasoning",
     lab: "AMS 691 — LLM Frontier · Stony Brook University",
-    status: "Course research paper",
+    status: "Course paper",
+    statusColor: "secondary" as const,
     points: [
       "Systematically evaluated multi-sample reasoning strategies on the GSM8K benchmark.",
       "Majority voting degrades accuracy from 82.5% → 61.67%; PRM-based reranking recovers to 74.5% but fails to match baseline.",
       "Proves the bottleneck lies in generation quality, not selection — PRMs misled by structurally coherent but logically incorrect reasoning.",
     ],
     tags: ["LLMs", "Reasoning", "GSM8K", "PRMs"],
+  },
+];
+
+const PUBLICATIONS = [
+  {
+    type: "First Author",
+    items: [
+      {
+        title: "Severe Blunt Splenic Injury Management: Should Interventional Radiologists Replace Surgeons?",
+        venue: "22nd Annual Academic Surgical Congress · Washington, DC · Feb 9, 2027",
+        status: "Accepted — Quickshot Presentation",
+        statusVariant: "default" as const,
+      },
+      {
+        title: "Generalized Additive Model Analysis of High-Grade Blunt Splenic Injury",
+        venue: "AMIA 2027 Amplify Informatics Conference · Atlanta, GA · Apr 12-15, 2027",
+        status: "Submitted — decision Dec 2026",
+        statusVariant: "secondary" as const,
+      },
+      {
+        title: "Splenic Artery Embolization Reduces Mortality Across Nine Years and 99,868 Patients",
+        venue: "Academic Surgical Congress Annual Meeting 2027",
+        status: "In preparation",
+        statusVariant: "outline" as const,
+      },
+      {
+        title: "AIS-Grade-Stratified Analysis Across Two TQIP Periods (N=16,226)",
+        venue: "Targeting JAMA Surgery",
+        status: "Manuscript in preparation",
+        statusVariant: "outline" as const,
+      },
+    ],
+  },
+  {
+    type: "Co-Authored",
+    items: [
+      {
+        title: "SGLT2 vs DPP-4 Inhibitor Initiation and Cognitive Outcomes in Older Adults With Type 2 Diabetes: Interaction With CKD",
+        venue: "Stony Brook DOM Research Symposium · Sep 18, 2026",
+        status: "Accepted — Oral & Poster",
+        statusVariant: "default" as const,
+      },
+      {
+        title: "ACS NSQIP Hysterectomy Outcomes Series (8 abstracts) + SEER Gynecologic Oncology Series",
+        venue: "2026 ACS Quality, Safety and Cancer Conference",
+        status: "9 abstracts accepted",
+        statusVariant: "default" as const,
+      },
+      {
+        title: "Social Vulnerability, COVID-Related Care Disruption, and Emergency Department Utilization",
+        venue: "Under peer review with major revisions, 2026",
+        status: "Under review",
+        statusVariant: "secondary" as const,
+      },
+    ],
   },
 ];
 
@@ -102,9 +160,9 @@ const ResearchSection = () => {
           viewport={{ once: true }}
           className="text-base text-muted-foreground leading-relaxed mb-8"
         >
-          Co-author on 9+ accepted research abstracts spanning surgical
-          outcomes, risk modeling, and healthcare disparities — built on
-          population-scale EHR and registry datasets:
+          10+ accepted research abstracts spanning surgical outcomes, causal
+          inference, and healthcare disparities — built on population-scale EHR
+          and registry datasets:
           <span className="inline-flex flex-wrap gap-1.5 ml-2 align-middle">
             {DATASETS.map((d) => (
               <Badge
@@ -129,10 +187,10 @@ const ResearchSection = () => {
           <div className="flex items-start justify-between gap-3 mb-6">
             <div>
               <h3 className="font-display text-base font-semibold text-foreground">
-                Blunt Spleen Injury — 8-Year Outcome Trends
+                Blunt Spleen Injury — 2016 vs 2024 Outcome Trends
               </h3>
               <p className="font-mono text-xs text-muted-foreground mt-0.5">
-                2.3M patients → 35,387 cohort · ACS TQIP registry · 2016–2024
+                2.3M patients → 16,226 cohort · ACS TQIP registry · 2016 & 2024
               </p>
             </div>
             <Badge variant="secondary" className="shrink-0 font-mono text-[10px]">
@@ -158,7 +216,7 @@ const ResearchSection = () => {
                       {study.title}
                     </CardTitle>
                     <Badge
-                      variant="secondary"
+                      variant={study.statusColor ?? "secondary"}
                       className="shrink-0 font-mono text-[10px] font-normal"
                     >
                       {study.status}
@@ -190,6 +248,52 @@ const ResearchSection = () => {
             </motion.div>
           ))}
         </div>
+
+        {/* Publications & Presentations */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.1 }}
+          viewport={{ once: true, margin: "-50px" }}
+          className="mt-14"
+        >
+          <h3 className="font-display text-lg font-semibold text-foreground mb-6">
+            Publications & Presentations
+          </h3>
+          <div className="space-y-8">
+            {PUBLICATIONS.map((group) => (
+              <div key={group.type}>
+                <p className="font-mono text-xs text-muted-foreground uppercase tracking-widest mb-3">
+                  {group.type}
+                </p>
+                <div className="space-y-3">
+                  {group.items.map((pub) => (
+                    <div
+                      key={pub.title}
+                      className="flex items-start justify-between gap-4 rounded-xl border border-border bg-card/50 px-5 py-4"
+                    >
+                      <div className="space-y-1 min-w-0">
+                        <p className="text-sm font-medium text-foreground leading-snug">
+                          {pub.title}
+                        </p>
+                        <p className="font-mono text-xs text-muted-foreground">
+                          {pub.venue}
+                        </p>
+                      </div>
+                      <Badge
+                        variant={pub.statusVariant}
+                        className="shrink-0 font-mono text-[10px] whitespace-nowrap"
+                      >
+                        {pub.status}
+                      </Badge>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+
       </div>
     </SectionWrapper>
   );

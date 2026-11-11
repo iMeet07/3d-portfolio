@@ -5,30 +5,30 @@ import { motion, useInView } from "motion/react";
 
 const METRICS = [
   {
-    label: "Angioembolization Use",
-    before: 5.9,
-    after: 18.8,
-    max: 25,
+    label: "SAE Adoption",
+    before: 16.9,
+    after: 33.7,
+    max: 40,
     direction: "up" as const,
-    note: "+218% adoption",
+    note: "+99% adoption",
     color: "var(--brand-via)",
   },
   {
-    label: "30-day Mortality",
-    before: 8.2,
-    after: 7.3,
+    label: "In-Hospital Mortality",
+    before: 7.7,
+    after: 6.6,
     max: 12,
     direction: "down" as const,
-    note: "−11% mortality",
+    note: "−14% mortality",
     color: "#34d399",
   },
   {
-    label: "Complication Rate",
-    before: 26.7,
-    after: 14.0,
-    max: 32,
+    label: "Operative Management",
+    before: 38.7,
+    after: 33.2,
+    max: 50,
     direction: "down" as const,
-    note: "−48% complications",
+    note: "−14% surgery",
     color: "#60a5fa",
   },
 ];
@@ -123,7 +123,7 @@ export const TQIPChart = () => {
       ))}
 
       <p className="font-mono text-[10px] text-muted-foreground/50 pt-2 border-t border-border/30">
-        Source: ACS TQIP · 35,387-patient blunt spleen injury cohort · 2016–2024
+        Source: ACS TQIP · 16,226-patient blunt spleen injury cohort · 2016–2024
       </p>
     </div>
   );
